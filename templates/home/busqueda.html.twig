@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultados{% endblock %}
+
+{% block body %}
+ <div class="resultados">
+{% for inmueble in inmuebles %}
+   
+        <div class="card mb-3" style="max-width: 40%;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="..." class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ inmueble.direccion }}</h5>
+                        <p class="card-text">Precio: {{ inmueble.precio }} €</p>
+                        <p class="card-text">{{ inmueble.ciudad }} {{ inmueble.cp }}</p>
+                        <p class="card-text"><small class="text-muted">{{ inmueble.superficie }} metros cuadrados</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+{% else %}
+    <span align="center">No se han encontrado registros</span>
+{% endfor %}
+</div>
+{% endblock %}

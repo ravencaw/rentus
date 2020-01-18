@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+
+<div class="home">
+    <form method="post" action="home/busqueda">
+            <div class="form-group" style="margin-top: 16px;">
+                <input class="form-control ciudad" placeholder="Ciudad/Codigo Postal..." type="text" name="busqueda[ciudad]" >
+                <select class="form-control" style="width: 25%;margin: 2%;margin-top: 0;" name="busqueda[tipo]">
+                        <option value="0" selected="">Seleccione una opcion...</option>
+                        <option value="compra">Alquiler</option>
+                        <option value="venta">Venta</option>
+                </select>
+                <input class="btn btn-primary submit" type="submit" value="Buscar" name="buscar"/>
+            </div>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="login-clean">
+        <form name="usuario" method="post">
+            <h2 class="sr-only">Login Form</h2>
+            <div class="illustration">
+                <i class="icon ion-ios-navigate"></i>
+            </div>
+
+            {{ include('login/_form.html.twig') }}
+
+            
+        </form>
+    </div>
+{% endblock %}

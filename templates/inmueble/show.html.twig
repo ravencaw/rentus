@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inmueble{% endblock %}
+
+{% block body %}
+    <h1>Inmueble</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ inmueble.id }}</td>
+            </tr>
+            <tr>
+                <th>TipoInmueble</th>
+                <td>{{ inmueble.tipoInmueble }}</td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td>{{ inmueble.precio }}</td>
+            </tr>
+            <tr>
+                <th>Superficie</th>
+                <td>{{ inmueble.superficie }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ inmueble.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Habitaciones</th>
+                <td>{{ inmueble.habitaciones }}</td>
+            </tr>
+            <tr>
+                <th>Bathroom</th>
+                <td>{{ inmueble.bathroom }}</td>
+            </tr>
+            <tr>
+                <th>Comentarios</th>
+                <td>{{ inmueble.comentarios }}</td>
+            </tr>
+            <tr>
+                <th>Extras</th>
+                <td>{{ inmueble.extras }}</td>
+            </tr>
+            <tr>
+                <th>IdCreador</th>
+                <td>{{ inmueble.idCreador }}</td>
+            </tr>
+            <tr>
+                <th>Disponible</th>
+                <td>{{ inmueble.disponible }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('inmueble_index') }}">back to list</a>
+
+    <a href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">edit</a>
+
+    {{ include('inmueble/_delete_form.html.twig') }}
+{% endblock %}

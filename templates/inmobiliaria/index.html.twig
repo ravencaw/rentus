@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inmobiliaria index{% endblock %}
+
+{% block body %}
+    <h1>Inmobiliaria index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Nif</th>
+                <th>Telefono</th>
+                <th>IdUsuarioAdmin</th>
+                <th>Logo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inmobiliarium in inmobiliarias %}
+            <tr>
+                <td>{{ inmobiliarium.id }}</td>
+                <td>{{ inmobiliarium.nombre }}</td>
+                <td>{{ inmobiliarium.direccion }}</td>
+                <td>{{ inmobiliarium.nif }}</td>
+                <td>{{ inmobiliarium.telefono }}</td>
+                <td>{{ inmobiliarium.idUsuarioAdmin }}</td>
+                <td>{{ inmobiliarium.logo }}</td>
+                <td>
+                    <a href="{{ path('inmobiliaria_show', {'id': inmobiliarium.id}) }}">show</a>
+                    <a href="{{ path('inmobiliaria_edit', {'id': inmobiliarium.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('inmobiliaria_new') }}">Create new</a>
+{% endblock %}

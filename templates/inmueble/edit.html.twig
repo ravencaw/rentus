@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Inmueble{% endblock %}
+
+{% block body %}
+    <h1>Edit Inmueble</h1>
+
+    {{ include('inmueble/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('inmueble_index') }}">back to list</a>
+
+    {{ include('inmueble/_delete_form.html.twig') }}
+{% endblock %}

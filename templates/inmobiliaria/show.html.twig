@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inmobiliaria{% endblock %}
+
+{% block body %}
+    <h1>Inmobiliaria</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ inmobiliarium.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ inmobiliarium.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ inmobiliarium.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Nif</th>
+                <td>{{ inmobiliarium.nif }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ inmobiliarium.telefono }}</td>
+            </tr>
+            <tr>
+                <th>IdUsuarioAdmin</th>
+                <td>{{ inmobiliarium.idUsuarioAdmin }}</td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>{{ inmobiliarium.logo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('inmobiliaria_index') }}">back to list</a>
+
+    <a href="{{ path('inmobiliaria_edit', {'id': inmobiliarium.id}) }}">edit</a>
+
+    {{ include('inmobiliaria/_delete_form.html.twig') }}
+{% endblock %}
