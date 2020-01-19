@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/login")
@@ -30,10 +31,16 @@ class LoginController extends AbstractController
                 ->findOneByCorreoAndPass($_POST["login"]["correo"], $_POST["login"]["password"]);
 
             if($usuario){
-                
-                $_SESSION["usuario_id"]=$usuario["id"];
-                $_SESSION["usuario_inmobiliaria"] = ($usuario["idInmobiliaria"])?$usuario["idInmobiliaria"]:"NULL";
+                $session = $request->getSession();
 
+                $session->start();
+
+                $session->clear();
+
+                $session->set('usuario_id', $usuario["id"]);
+                $session->set('usuario_nombre', $usuario["nombre"]);
+                $session->set('usuario_inmobiliaria', $usuario["idInmobiliaria"]);
+                
                 return $this->redirectToRoute('home_index');
             }else{
                 echo "<div class='alert alert-danger' role='alert'>El usuario o la contraseña son incorrectos</div>";
@@ -45,5 +52,21 @@ class LoginController extends AbstractController
         ]);
 
         
+    }
+
+    public function logout(Request $request)
+    {
+        /**
+         * @Route("/logout", name="logout_index", methods={"GET", "POST"})
+         */
+        
+        $session = $request->getSession();
+
+        $session->start();
+        
+        $session->invalidate();
+        $session->clear();
+
+        return $this->redirectToRoute('login');
     }
 }

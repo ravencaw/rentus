@@ -76,6 +76,8 @@ CREATE TABLE `inmueble` (
   `tipoInmueble` int(11) NOT NULL,
   `precio` int(11) NOT NULL,
   `superficie` int(11) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `cp` int(11) NOT NULL,
   `direccion` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `habitaciones` int(11) NOT NULL,
   `bathroom` int(11) NOT NULL,

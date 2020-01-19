@@ -16,12 +16,11 @@
                         <h5 class="card-title">{{ inmueble.direccion }}</h5>
                         <p class="card-text">Precio: {{ inmueble.precio }} €</p>
                         <p class="card-text">{{ inmueble.ciudad }} {{ inmueble.cp }}</p>
-                        <p class="card-text"><small class="text-muted">{{ inmueble.superficie }} metros cuadrados</small></p>
+                        <p class="card-text"><small class="text-muted">{{ inmueble.superficie }} m<sup>2</sup> - {{ (inmueble.precio/inmueble.superficie)|round(2,'floor') }} €/m<sup>2</sup></small></p>
                     </div>
                 </div>
             </div>
         </div>
-    
 
 {% else %}
     <span align="center">No se han encontrado registros</span>

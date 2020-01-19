@@ -6,6 +6,10 @@ login:
   path: /login
   controller: App\Controller\LoginController::index
 
+logout:
+  path: /login/logout
+  controller: App\Controller\LoginController::logout
+
 home_index:
   path: /home
   controller: App\Controller\HomeController::index

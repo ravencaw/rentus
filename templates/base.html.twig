@@ -14,15 +14,23 @@
     <body>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
             <div class="container"><a class="navbar-brand" href="{{ path('home_index') }}">Rentus</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav mr-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Favoritos</a></li>
-                        <li class="nav-item" role="presentation"></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Chats</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                        </li>
-                    </ul><span class="navbar-text actions"> <a class="login" href="{{ path('login') }}">Log In</a><a class="btn btn-light action-button" role="button" href="{{ path('sign_up') }}">Sign Up</a></span></div>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <div class="nav navbar-nav mr-auto"></div>
+                    {% if app.session.get('usuario_id')  %}
+                    <div class="dropdown">
+                        <a class="btn  dropdown-toggle dropdown-toggle-split" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon ion-person"></i> {{ app.session.get('usuario_nombre') }}
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#"><i class="icon ion-home"></i> Mi perfil</a>
+                            <a class="dropdown-item" href="{{ path('logout') }}"><i class="icon ion-power"></i> Salir</a>
+                        </div>
+                    </div>
+                    {% else %}
+                        <span class="navbar-text actions"> <a class="login" href="{{ path('login') }}">Iniciar sesión</a><a class="btn btn-light action-button" role="button" href="{{ path('sign_up') }}">Registrar</a></span>
+                    {% endif %}
+                </div>
             </div>
         </nav>
         {% block body %}{% endblock %}
