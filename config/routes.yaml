@@ -18,6 +18,16 @@ home_busqueda:
   path: /home/busqueda
   controller: App\Controller\HomeController::busqueda
 
+home_resultado:
+  path: /home/resultado/{id}
+  controller: App\Controller\HomeController::resultado
+
 sign_up:
   path: /usuario/new
   controller: App\Controller\UsuarioController::new
+
+inmobiliaria_new:
+  path: /inmobiliaria/new/{id}
+  controller: App\Controller\InmobiliariaController::new
+  requirements:
+    id: '\d+'

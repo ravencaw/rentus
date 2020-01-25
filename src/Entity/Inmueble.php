@@ -39,12 +39,27 @@ class Inmueble
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $zona;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $ciudad;
 
     /**
      * @ORM\Column(type="integer")
      */
     private $cp;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitud;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitud;
 
     /**
      * @ORM\Column(type="integer")
@@ -129,6 +144,18 @@ class Inmueble
         return $this;
     }
 
+    public function getZona(): ?string
+    {
+        return $this->zona;
+    }
+
+    public function setZona(string $zona): self
+    {
+        $this->zona = $zona;
+
+        return $this;
+    }
+
     public function getCiudad(): ?string
     {
         return $this->ciudad;
@@ -149,6 +176,31 @@ class Inmueble
     public function setCp(int $cp): self
     {
         $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getLongitud(): ?string
+    {
+        return $this->longitud;
+    }
+
+    public function setLongitud(string $longitud): self
+    {
+        $this->longitud = $longitud;
+
+        return $this;
+    }
+
+
+    public function getLatitud(): ?string
+    {
+        return $this->latitud;
+    }
+    
+    public function setLatitud(string $latitud): self
+    {
+        $this->latitud = $latitud;
 
         return $this;
     }

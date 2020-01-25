@@ -6,6 +6,9 @@ use App\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class UsuarioType extends AbstractType
 {
@@ -13,10 +16,9 @@ class UsuarioType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('correo')
-            ->add('telefono')
-            ->add('password')
-            ->add('idInmobiliaria')
+            ->add('correo', EmailType::class)
+            ->add('telefono', TelType::class)
+            ->add('password', PasswordType::class)
         ;
     }
 

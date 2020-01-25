@@ -232,9 +232,137 @@
     text-decoration: none;
   }
 
-  /*Resultados CSS*/
+  /*Busqueda CSS*/
 
-  .resultados {
+  .busqueda {
     background: #f1f7fc;
     padding: 80px 0;
   }
+
+  .busqueda a{
+    text-decoration: none !important;
+  }
+
+  /*Resultado CSS*/
+
+  #map {
+    height: 600px;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .simple-slider .swiper-slide {
+    height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .simple-slider .swiper-button-next, .simple-slider .swiper-button-prev {
+    width: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  @media (max-width:767px) {
+    .simple-slider .swiper-button-next, .simple-slider .swiper-button-prev {
+      display: none;
+    }
+  }
+  
+  @media (max-width:767px) {
+    .simple-slider .swiper-slide {
+      height: 360px;
+    }
+  }
+  
+ /*Inmoobiliaria new CSS*/
+  
+ .inmobiliaria-photo {
+  background: #f1f7fc;
+  padding: 80px 0;
+}
+
+.inmobiliaria-photo .image-holder {
+  display: table-cell;
+  width: auto;
+  background: url(../img/skyline.jpg);
+  background-size: cover;
+}
+
+.inmobiliaria-photo .form-container {
+  display: table;
+  max-width: 900px;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+.inmobiliaria-photo form {
+  display: table-cell;
+  width: 400px;
+  background-color: #ffffff;
+  padding: 40px 60px;
+  color: #505e6c;
+}
+
+@media (max-width:991px) {
+  .inmobiliaria-photo form {
+    padding: 40px;
+  }
+}
+
+.inmobiliaria-photo form h2 {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.inmobiliaria-photo form .form-control {
+  background: #f7f9fc;
+  border: none;
+  border-bottom: 1px solid #dfe7f1;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  color: inherit;
+  text-indent: 6px;
+  height: 40px;
+}
+
+.inmobiliaria-photo form .form-check {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.inmobiliaria-photo form .btn-primary {
+  background: #56c6c6;
+  border: none;
+  border-radius: 4px;
+  padding: 11px;
+  box-shadow: none;
+  margin-top: 35px;
+  text-shadow: none;
+  outline: none !important;
+}
+
+.inmobiliaria-photo form .btn-primary:hover, .inmobiliaria-photo form .btn-primary:active {
+  background: #56c6c6;
+}
+
+.inmobiliaria-photo form .btn-primary:active {
+  transform: translateY(1px);
+}
+
+.inmobiliaria-photo form .already {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #6f7a85;
+  opacity: 0.9;
+  text-decoration: none;
+}

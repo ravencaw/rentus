@@ -30,17 +30,40 @@ class UsuarioController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $valid = true;
         $usuario = new Usuario();
         $form = $this->createForm(UsuarioType::class, $usuario);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($usuario);
-            $entityManager->flush();
+        
 
-            return $this->redirectToRoute('login');
-        }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $usuario_existe = $this->getDoctrine()
+            ->getRepository(Usuario::class)
+            ->findOneBy(array("correo"=>$_POST["usuario"]["correo"]));
+
+            if($usuario_existe){
+                $valid = false;
+            }
+            if($valid){
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($usuario);
+                $entityManager->flush();
+
+                if(!isset($_POST["new_inmobiliaria"])){
+                    return $this->redirectToRoute('login');
+                }else{
+                    $usuario_id = $this->getDoctrine()
+                    ->getRepository(Usuario::class)
+                    ->findOneByCorreoAndPass($_POST["usuario"]["correo"], $_POST["usuario"]["password"]);
+                    return $this->redirectToRoute("inmobiliaria_new",array("id"=>$usuario_id['id']));
+                }
+            }else{
+                return $this->redirectToRoute('usuario_new');
+            }
+            
+        } 
+
 
         return $this->render('usuario/new.html.twig', [
             'usuario' => $usuario,

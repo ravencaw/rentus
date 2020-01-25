@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Inmobiliaria{% endblock %}
+{% block title %}Nueva Inmobiliaria{% endblock %}
 
 {% block body %}
-    <h1>Create new Inmobiliaria</h1>
-
-    {{ include('inmobiliaria/_form.html.twig') }}
-
-    <a href="{{ path('inmobiliaria_index') }}">back to list</a>
+<div class="inmobiliaria-photo">
+    <div class="form-container" style="max-width: none;width: 90%;height: 470px;">
+        <div class="image-holder" style="width: 40%;"></div>
+            <form method="post" style="width: 40%;height: 460px;" enctype="multipart/form-data">
+                <h2 class="text-center"><strong>¡Añade tu inmobiliaria!</strong></h2>
+                {{ include('inmobiliaria/_form.html.twig') }}
+             </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

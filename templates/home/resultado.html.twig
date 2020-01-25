@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultados{% endblock %}
+
+{% block body %}
+    <div resultado>
+        <div class="login-clean" style="padding-top: 60px;padding-bottom: 60px;">
+        <div style="padding: 20px;background-color: #dfe8ee;">
+            <div class="text-left d-inline-flex" style="width: 100%;margin-left: 0px;">
+                <div class="carousel slide" data-ride="carousel" id="carousel-1" style="width: 45%;">
+                    <div class="carousel-inner" role="listbox">
+                    {% set j = 0 %}
+                    {% for f in fotos %}
+                        <div class="carousel-item {% if j == 0 %}active{% endif %}"><img class="w-100 d-block" src="{{ asset('../public/img/inmuebles/')  }}{{ inmueble.id }}/{{ f.ruta}} alt="Slide Image" ></div>
+                        {% set j = j+1 %}
+                    {% else %}
+                        <div class="carousel-item active"><img class="w-100 d-block" src="public/img/no_image.jpg" alt="Slide Image"></div>
+                    {% endfor %}
+                    </div>
+                    <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button"
+                            data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
+                    <ol class="carousel-indicators">
+                    {% set i = 0 %}
+                    {% for f in fotos %}
+                        <li data-target="#carousel-1" data-slide-to="{{ i }}" {% if i == 0 %}class="active"{% endif %}></li>
+                        {% set i = i+1 %}
+                    {% endfor %}
+                    </ol>
+                </div>
+                <div class="card" style="width: 53%;margin-left: 20px;background-color: rgba(255,255,255,0.23);">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ inmueble.direccion }}. Zona: {{ inmueble.zona }}</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Precio: {{ inmueble.precio }} €</h6>
+                        <p class="card-text">{{ inmueble.ciudad }} {{ inmueble.cp }}</p>
+                        <p class="card-text"><small class="text-muted">{{ inmueble.superficie }} m<sup>2</sup> - {{ (inmueble.precio/inmueble.superficie)|round(2,'floor') }} €/m<sup>2</sup></small></p>
+                        <br><h6>Comentarios:</h6>
+                        <p class="card-text">{{ inmueble.comentarios }}</p>
+                        <br><h6>Extras:</h6>
+                        <p class="card-text">{{ inmueble.extras }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: rgb(241,247,252);padding-top: 0px;padding-bottom: 40px;width: 100%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <form>
+                        <div class="form-group"><label>Correo electronico:</label><input class="form-control" type="email"></div>
+                        <div class="form-group"><label>Telefono:</label><input class="form-control" type="tel" style="width: 100%;"></div>
+                        <div class="form-group"><label>Mensaje:</label><textarea class="form-control"></textarea></div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    {% if app.session.get('usuario_id')  %}
+                    <ul class="list-unstyled text-left" style="margin-top: 30px;">
+                        <li style="padding-bottom: 10px;"><i class="fa fa-star"></i><a href="#">&nbsp;Añadir a favoritos</a></li>
+                        <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="#">Crear alerta</a></li>
+                        <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="#">Abrir chat con vendedor/arrendador</a></li>
+                    </ul>
+                    {% else %}
+                        <div style="display:inline">
+                            <img class="col-md-4" src="public/img/no_registrado.png" >
+                            <h4>Parece que no has iniciado sesión</h4>
+                            <h6>Iniciar sesion te permitirá: </h6>
+                            <ul class="list-unstyled text-left" style="font-size:13px;">
+                                <li><i class="icon ion-checkmark"></i> Añadir a favoritos los inmuebles en los que estes interesado</li>
+                                <li><i class="icon ion-checkmark"></i> Crear alertas sobre los inmuebles y las busquedas para estar siempre informado</li>
+                                <li><i class="icon ion-checkmark"></i> Abrir chats con los vendedores y arrendadores para una comunicacion mas directa</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="map" class="col-md-12"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/home/resultado.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g&callback=initMap"></script>
+{% endblock %}

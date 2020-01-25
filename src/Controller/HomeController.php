@@ -5,8 +5,11 @@ namespace App\Controller;
 
 
 use App\Entity\Inmueble;
+use App\Entity\Foto;
 use App\Form\InmuebleType;
+use App\Form\FotoType;
 use App\Repository\InmuebleRepository;
+use App\Repository\FotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,5 +53,31 @@ class HomeController extends AbstractController
             'inmuebles' => $inmuebles
         ]);
 
+    }
+
+    public function resultado(int $id, Request $request): Response
+    {
+        /**
+         * @Route("/resultado/{id}", name="home_resultado", methods={"GET", "POST"})
+         */
+
+        //API Maps Key:  AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g 
+
+        $inmueble = $this->getDoctrine()
+        ->getRepository(Inmueble::class)
+        ->find($id);
+
+        $fotos = $this->getDoctrine()
+        ->getRepository(Foto::class)
+        ->findBy(array('idInmueble'=>$id));
+
+        if(!$inmueble){
+            return $this->redirectToRoute('home_index');
+        }
+
+        return $this->render('home/resultado.html.twig', [
+            'inmueble' => $inmueble,
+            'fotos' => $fotos
+        ]);
     }
 }

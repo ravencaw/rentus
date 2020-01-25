@@ -6,6 +6,9 @@ use App\Entity\Inmobiliaria;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InmobiliariaType extends AbstractType
 {
@@ -13,11 +16,10 @@ class InmobiliariaType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('direccion')
+            ->add('direccion', TextType::class)
             ->add('nif')
-            ->add('telefono')
-            ->add('idUsuarioAdmin')
-            ->add('logo')
+            ->add('telefono', TelType::class)
+            ->add('logo', FileType::class)
         ;
     }
 
