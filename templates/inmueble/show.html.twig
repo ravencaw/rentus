@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Inmueble{% endblock %}
 
@@ -8,20 +8,16 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ inmueble.id }}</td>
-            </tr>
-            <tr>
-                <th>TipoInmueble</th>
+                <th>Tipo</th>
                 <td>{{ inmueble.tipoInmueble }}</td>
             </tr>
             <tr>
                 <th>Precio</th>
-                <td>{{ inmueble.precio }}</td>
+                <td>{{ inmueble.precio }} €</td>
             </tr>
             <tr>
                 <th>Superficie</th>
-                <td>{{ inmueble.superficie }}</td>
+                <td>{{ inmueble.superficie }} m<sup>2</sup></td>
             </tr>
             <tr>
                 <th>Direccion</th>
@@ -44,19 +40,15 @@
                 <td>{{ inmueble.extras }}</td>
             </tr>
             <tr>
-                <th>IdCreador</th>
-                <td>{{ inmueble.idCreador }}</td>
-            </tr>
-            <tr>
                 <th>Disponible</th>
-                <td>{{ inmueble.disponible }}</td>
+                <td>{% if inmueble.disponible == 1 %}Si{% else %}No{% endif %}</td>
             </tr>
-        </tbody>
+        </tbody> 
     </table>
 
-    <a href="{{ path('inmueble_index') }}">back to list</a>
+    <a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Volver</a>
 
-    <a href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">edit</a>
+    <a class="btn btn-primary" href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">Editar</a>
 
     {{ include('inmueble/_delete_form.html.twig') }}
 {% endblock %}

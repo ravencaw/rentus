@@ -22,12 +22,31 @@ home_resultado:
   path: /home/resultado/{id}
   controller: App\Controller\HomeController::resultado
 
+home_ajaxGetLocalizacion:
+  path: /home/ajax/ajaxGetLocalizacion/{id}
+  controller: App\Controller\HomeController::ajaxGetLocalizacion
+  methods: [POST]
+
 sign_up:
   path: /usuario/new
   controller: App\Controller\UsuarioController::new
+
+usuario_edit:
+    path: /usuario/{id}/edit
+    controller: App\Controller\UsuarioController::edit
+
+inmueble_show:
+  path: /inmueble/show/{id}
+  controller: App\Controller\InmuebleController::show
+
+inmueble_new:
+  path: /inmueble/new
+  controller: App\Controller\InmuebleController::new
 
 inmobiliaria_new:
   path: /inmobiliaria/new/{id}
   controller: App\Controller\InmobiliariaController::new
   requirements:
     id: '\d+'
+
+  

@@ -11,10 +11,10 @@
                     <div class="carousel-inner" role="listbox">
                     {% set j = 0 %}
                     {% for f in fotos %}
-                        <div class="carousel-item {% if j == 0 %}active{% endif %}"><img class="w-100 d-block" src="{{ asset('../public/img/inmuebles/')  }}{{ inmueble.id }}/{{ f.ruta}} alt="Slide Image" ></div>
+                        <div class="carousel-item {% if j == 0 %}active{% endif %}"><img class="w-100 d-block" src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ f.ruta}}" alt="Slide Image" ></div>
                         {% set j = j+1 %}
                     {% else %}
-                        <div class="carousel-item active"><img class="w-100 d-block" src="public/img/no_image.jpg" alt="Slide Image"></div>
+                        <div class="carousel-item active"><img class="w-100 d-block" src="{{ asset('img/no_image.jpg') }}" alt="Slide Image"></div>
                     {% endfor %}
                     </div>
                     <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button"
@@ -29,6 +29,7 @@
                 </div>
                 <div class="card" style="width: 53%;margin-left: 20px;background-color: rgba(255,255,255,0.23);">
                     <div class="card-body">
+                        <input type="hidden" id="idInmueble" value="{{ inmueble.id }}"/>
                         <h4 class="card-title">{{ inmueble.direccion }}. Zona: {{ inmueble.zona }}</h4>
                         <h6 class="text-muted card-subtitle mb-2">Precio: {{ inmueble.precio }} €</h6>
                         <p class="card-text">{{ inmueble.ciudad }} {{ inmueble.cp }}</p>
@@ -61,7 +62,7 @@
                     </ul>
                     {% else %}
                         <div style="display:inline">
-                            <img class="col-md-4" src="public/img/no_registrado.png" >
+                            <img class="col-md-4" src="{{ asset('img/no_registrado.png') }}" >
                             <h4>Parece que no has iniciado sesión</h4>
                             <h6>Iniciar sesion te permitirá: </h6>
                             <ul class="list-unstyled text-left" style="font-size:13px;">

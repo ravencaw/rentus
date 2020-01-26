@@ -1,13 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
-{% block title %}Edit Usuario{% endblock %}
+{% block title %}Mi cuenta{% endblock %}
 
 {% block body %}
-    <h1>Edit Usuario</h1>
+    <h1>Mi cuenta</h1>
 
-    {{ include('usuario/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('usuario/_form.html.twig', {'button_label': 'Guardar cambios'}) }}
 
-    <a href="{{ path('usuario_index') }}">back to list</a>
-
-    {{ include('usuario/_delete_form.html.twig') }}
+    {{ include('usuario/_delete_form.html.twig', {'button_label': 'Borrar cuenta'}) }}
 {% endblock %}
