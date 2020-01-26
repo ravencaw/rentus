@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cita index{% endblock %}
+
+{% block body %}
+    <h1>Cita index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha_hora</th>
+                <th>Id_usuario1</th>
+                <th>Id_usuario2</th>
+                <th>Direccion</th>
+                <th>Ciudad</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for citum in citas %}
+            <tr>
+                <td>{{ citum.id }}</td>
+                <td>{{ citum.fechaHora ? citum.fechaHora|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ citum.idUsuario1 }}</td>
+                <td>{{ citum.idUsuario2 }}</td>
+                <td>{{ citum.direccion }}</td>
+                <td>{{ citum.ciudad }}</td>
+                <td>
+                    <a href="{{ path('cita_show', {'id': citum.id}) }}">show</a>
+                    <a href="{{ path('cita_edit', {'id': citum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('cita_new') }}">Create new</a>
+{% endblock %}

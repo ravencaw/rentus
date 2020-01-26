@@ -48,10 +48,20 @@ class HomeController extends AbstractController
                 $inmuebles = $this->getDoctrine()
                 ->getRepository(Inmueble::class)
                 ->findBy(array('ciudad'=>$_POST["busqueda"]["ciudad"], 'tipoInmueble'=>$_POST["busqueda"]["tipo"]));
+            
+                $fotos = array();
+
+                foreach($inmuebles as $in){
+                    $fotos[$in->getId()] = $this->getDoctrine()
+                    ->getRepository(Foto::class)
+                    ->findOneBy(array('idInmueble'=>$in->getId()));
+                }
+            
             }
         }
         return $this->render('home/busqueda.html.twig', [
-            'inmuebles' => $inmuebles
+            'inmuebles' => $inmuebles,
+            'fotos' => $fotos
         ]);
 
     }

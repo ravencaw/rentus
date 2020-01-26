@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alerta{% endblock %}
+
+{% block body %}
+    <h1>Alerta</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ alertum.id }}</td>
+            </tr>
+            <tr>
+                <th>Id_inmueble</th>
+                <td>{{ alertum.idInmueble }}</td>
+            </tr>
+            <tr>
+                <th>Id_usuario</th>
+                <td>{{ alertum.idUsuario }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('alerta_index') }}">back to list</a>
+
+    <a href="{{ path('alerta_edit', {'id': alertum.id}) }}">edit</a>
+
+    {{ include('alerta/_delete_form.html.twig') }}
+{% endblock %}
