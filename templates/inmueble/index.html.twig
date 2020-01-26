@@ -1,25 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
-{% block title %}Inmueble index{% endblock %}
+{% block title %}Mis inmuebles{% endblock %}
 
 {% block body %}
-    <h1>Inmueble index</h1>
+    <h1>Mis inmuebles</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>TipoInmueble</th>
+                <th>Tipo</th>
                 <th>Precio</th>
                 <th>Superficie</th>
                 <th>Direccion</th>
                 <th>Habitaciones</th>
-                <th>Bathroom</th>
+                <th>Baños</th>
                 <th>Comentarios</th>
                 <th>Extras</th>
-                <th>IdCreador</th>
                 <th>Disponible</th>
-                <th>actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -27,27 +26,26 @@
             <tr>
                 <td>{{ inmueble.id }}</td>
                 <td>{{ inmueble.tipoInmueble }}</td>
-                <td>{{ inmueble.precio }}</td>
-                <td>{{ inmueble.superficie }}</td>
+                <td>{{ inmueble.precio }} €</td>
+                <td>{{ inmueble.superficie }} m<sup>2</sup></td>
                 <td>{{ inmueble.direccion }}</td>
                 <td>{{ inmueble.habitaciones }}</td>
                 <td>{{ inmueble.bathroom }}</td>
                 <td>{{ inmueble.comentarios }}</td>
                 <td>{{ inmueble.extras }}</td>
-                <td>{{ inmueble.idCreador }}</td>
-                <td>{{ inmueble.disponible }}</td>
+                <td>{% if inmueble.disponible == 1 %}Si{% else %}No{% endif %}</td>
                 <td>
-                    <a href="{{ path('inmueble_show', {'id': inmueble.id}) }}">show</a>
-                    <a href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">edit</a>
+                    <a class="btn btn-primary col-md-12" href="{{ path('inmueble_show', {'id': inmueble.id}) }}">show</a>
+                    <a class="btn btn-danger col-md-12" href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">no records found</td>
+                <td colspan="12">No se encontraron inmuebles</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('inmueble_new') }}">Create new</a>
+    <a class="btn btn-light" href="{{ path('inmueble_new') }}">Añadir nuevo inmueble</a>
 {% endblock %}

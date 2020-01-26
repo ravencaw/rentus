@@ -36,15 +36,26 @@ class InmuebleRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Inmueble
+    
+    public function findOneById($id): array
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $qb = $this->createQueryBuilder('u')
+            ->where("u.id = :id")
+            ->setParameter('id', $id)
         ;
+
+        $query = $qb->getQuery();
+        $usuario = $query->setMaxResults(1)->getOneOrNullResult();
+
+        $normalizers = new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer();
+        if($usuario){
+            $norm = $normalizers->normalize($usuario);
+        }else{
+            $norm = [];
+        }
+
+        return $norm;
     }
-    */
+    
+
 }

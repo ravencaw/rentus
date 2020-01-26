@@ -6,27 +6,43 @@ use App\Entity\Inmueble;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class InmuebleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipoInmueble')
+            ->add('tipoInmueble', ChoiceType::class, [
+                'choices' => [
+                    'Venta' => 'venta',
+                    'Alquiler' => 'alquiler'
+                ]
+            ])
             ->add('precio')
             ->add('superficie')
             ->add('direccion')
-            ->add('zona')
+            ->add('zona', ChoiceType::class, [
+                'choices' => [
+                    'Centro' => "centro",
+                    'Cerca del centro' => "cerca_centro",
+                    'Periferia' => "periferia",
+                    'Extrarradio' => "extrarradio",
+                    'Afueras' => "afueras"
+                ]
+            ])
             ->add('ciudad')
             ->add('cp')
-            ->add('longitud')
-            ->add('latitud')
             ->add('habitaciones')
             ->add('bathroom')
             ->add('comentarios')
             ->add('extras')
-            ->add('idCreador')
-            ->add('disponible')
+            ->add('disponible', ChoiceType::class, [
+                'choices' => [
+                    'Si' => 1,
+                    'No' => 0
+                ]
+            ])
         ;
     }
 

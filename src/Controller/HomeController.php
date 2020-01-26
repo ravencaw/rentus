@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/home")
@@ -79,5 +80,15 @@ class HomeController extends AbstractController
             'inmueble' => $inmueble,
             'fotos' => $fotos
         ]);
+    }
+
+    /**
+     * @Route("/ajax/ajaxGetLocalizacion", name="home_ajaxGetLocalizacion", methods={"POST"})
+     */
+    public function ajaxGetLocalizacion(InmuebleRepository $inmuebleRepository): JsonResponse
+    {
+        $result = $inmuebleRepository->findOneById($_POST["idInmueble"]);
+
+        return new JsonResponse($result);
     }
 }
