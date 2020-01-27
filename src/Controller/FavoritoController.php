@@ -83,7 +83,7 @@ class FavoritoController extends AbstractController
         $favorito = $this->getDoctrine()
         ->getRepository(Favorito::class)
         ->find($id); 
-        print_r($favorito);exit;
+        
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($favorito);
         $entityManager->flush();

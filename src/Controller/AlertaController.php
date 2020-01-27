@@ -76,22 +76,20 @@ class AlertaController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{idInmueble}", name="alerta_delete", methods={"DELETE"})
+     * @Route("/delete/{id}/{idInmueble}", name="alerta_delete", methods={"DELETE"})
      */
-    public function delete($idInmueble, Request $request): Response
+    public function delete($id, $idInmueble, Request $request): Response
     {
         $session = $request->getSession();
 
-        $alerta=$this->getDoctrine()
+        $alertum=$this->getDoctrine()
         ->getRepository(Alerta::class)
-        ->findBy(array('id_inmueble'=>$idInmueble, 'id_usuario'=>$session->get("usuario_id")));
+        ->find($id);
 
-        if ($this->isCsrfTokenValid('delete'.$alertum->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($alertum);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($alertum);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('alerta_index');
+        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
     }
 }

@@ -27,7 +27,7 @@ alerta_new:
   controller: App\Controller\AlertaController::new
 
 alerta_delete:
-  path: /alerta/delete/{idInmueble}
+  path: /alerta/delete/{id}/{idInmueble}
   controller: App\Controller\AlertaController::delete
 
 login:

@@ -64,7 +64,7 @@
                         {% endif %}
 
                         {% if alerta %}
-                            <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="{{ path('alerta_delete', {idInmueble: inmueble.id}) }}">Eliminar alerta</a></li>
+                            <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="{{ path('alerta_delete', {id: alerta.id, idInmueble: inmueble.id}) }}">Eliminar alerta</a></li>
                         {% else %}
                             <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="{{ path('alerta_new', {idInmueble: inmueble.id}) }}">Crear alerta</a></li>
                         {% endif %}
