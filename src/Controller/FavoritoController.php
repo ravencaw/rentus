@@ -3,8 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Favorito;
+use App\Entity\Inmueble;
+use App\Entity\Foto;
 use App\Form\FavoritoType;
+use App\Form\InmuebleType;
+use App\Form\FotoType;
 use App\Repository\FavoritoRepository;
+use App\Repository\InmuebleRepository;
+use App\Repository\FotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +22,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class FavoritoController extends AbstractController
 {
     /**
-     * @Route("/", name="favorito_index", methods={"GET"})
+     * @Route("/index/{idUsuario}", name="favorito_index", methods={"GET"})
      */
-    public function index(FavoritoRepository $favoritoRepository): Response
+    public function index($idUsuario, FavoritoRepository $favoritoRepository): Response
     {
+        $favoritos = $favoritoRepository->findBy(array("id_usuario"=>$idUsuario));
+        $inmuebles = array();
+        $fotos = array();
+
+        foreach($favoritos as $f){
+            $inmuebles[$f->getId()] =  $this->getDoctrine()
+            ->getRepository(Inmueble::class)
+            ->find($f->getIdInmueble()); 
+
+            foreach($inmuebles as $in){
+                $fotos[$in->getId()] = $this->getDoctrine()
+                ->getRepository(Foto::class)
+                ->findOneBy(array('idInmueble'=>$in->getId()));
+            }
+        }
+
         return $this->render('favorito/index.html.twig', [
-            'favoritos' => $favoritoRepository->findAll(),
+            'favoritos' => $favoritos,
+            'inmuebles' => $inmuebles,
+            'fotos' => $fotos
         ]);
     }
 

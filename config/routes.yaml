@@ -22,6 +22,10 @@ favorito_delete:
   path: /favorito/delete/{id}/{idInmueble}
   controller: App\Controller\FavoritoController::delete
 
+favorito_index:
+  path: /favorito/index/{idUsuario}
+  controller: App\Controller\FavoritoController::index
+
 alerta_new:
   path: /alerta/new/{idInmueble}
   controller: App\Controller\AlertaController::new

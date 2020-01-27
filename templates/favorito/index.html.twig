@@ -1,37 +1,37 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
-{% block title %}Favorito index{% endblock %}
+{% block title %}Mis favoritos{% endblock %}
 
 {% block body %}
-    <h1>Favorito index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Id_usuario</th>
-                <th>Id_inmueble</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <h1>Mis favoritos</h1>
+        <ul style="list-style:none">
         {% for favorito in favoritos %}
-            <tr>
-                <td>{{ favorito.id }}</td>
-                <td>{{ favorito.idUsuario }}</td>
-                <td>{{ favorito.idInmueble }}</td>
-                <td>
-                    <a href="{{ path('favorito_show', {'id': favorito.id}) }}">show</a>
-                    <a href="{{ path('favorito_edit', {'id': favorito.id}) }}">edit</a>
-                </td>
-            </tr>
+            <li>
+                <div class="card mb-3 col-md-12">
+                    <div class="row no-gutters">
+                        <div class="col-md-6">
+                            {% if fotos[inmuebles[favorito.id].id] %}
+                                <img src="{{ asset('img/inmuebles/')  }}{{ inmuebles[favorito.id].id }}/{{ fotos[inmuebles[favorito.id].id].ruta}}" class="card-img" alt="...">
+                            {% else %}
+                                <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="...">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ inmuebles[favorito.id].direccion }}</h5>
+                            <p class="card-text">Precio: {{ inmuebles[favorito.id].precio }} €</p>
+                            <p class="card-text">{{ inmuebles[favorito.id].ciudad }} {{ inmuebles[favorito.id].cp }}</p>
+                            <p class="card-text"><small class="text-muted">{{ inmuebles[favorito.id].superficie }} m<sup>2</sup> - {{ (inmuebles[favorito.id].precio/inmuebles[favorito.id].superficie)|round(2,'floor') }} €/m<sup>2</sup></small></p>
+                            <a class="btn btn-danger col-md-12" href="{{ path('favorito_delete', {'id': favorito.id, 'idInmueble': favorito.idInmueble}) }}"><i class="icon ion-close"></i></a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
         {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+            <li>
+                <span colspan="4">no records found</span>
+            </li>
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('favorito_new') }}">Create new</a>
+        </ul>
 {% endblock %}

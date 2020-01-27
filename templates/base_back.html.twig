@@ -38,10 +38,10 @@
                 <div id="sidebar-wrapper" style="background-color: rgb(39,104,104);color: rgb(0,0,0);text-align:right;">
                     <ul class="sidebar-nav">
                         <li> <a href="{{ path('usuario_edit', {id: app.session.get('usuario_id')}) }}">Mi cuenta</a></li>
-                        <li> <a href="#">Mis alertas</a></li>
+                        <li> <a href="{{ path('alerta_index', {idUsuario: app.session.get('usuario_id')}) }}">Mis alertas</a></li>
                         <li> <a href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Mis inmuebles</a></li>
                         <li> <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Mis citas</a></li>
-                        <li> <a href="#">Mis favoritos</a></li>
+                        <li> <a href="{{ path('favorito_index', {idUsuario: app.session.get('usuario_id')}) }}">Mis favoritos</a></li>
                         <li> <a href="#">Chats</a></li>
                     </ul>
                 </div>

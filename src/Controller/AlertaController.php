@@ -3,8 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Alerta;
+use App\Entity\Inmueble;
+use App\Entity\Foto;
 use App\Form\AlertaType;
+use App\Form\InmuebleType;
+use App\Form\FotoType;
 use App\Repository\AlertaRepository;
+use App\Repository\InmuebleRepository;
+use App\Repository\FotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +22,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class AlertaController extends AbstractController
 {
     /**
-     * @Route("/", name="alerta_index", methods={"GET"})
+     * @Route("/index/{idUsuario}", name="alerta_index", methods={"GET"})
      */
-    public function index(AlertaRepository $alertaRepository): Response
+    public function index($idUsuario, AlertaRepository $alertaRepository): Response
     {
+        $alertas = $alertaRepository->findBy(array("id_usuario"=>$idUsuario));
+        $inmuebles = array();
+        $fotos = array();
+
+        foreach($alertas as $a){
+            $inmuebles[$a->getId()] =  $this->getDoctrine()
+            ->getRepository(Inmueble::class)
+            ->find($a->getIdInmueble()); 
+
+            foreach($inmuebles as $in){
+                $fotos[$in->getId()] = $this->getDoctrine()
+                ->getRepository(Foto::class)
+                ->findOneBy(array('idInmueble'=>$in->getId()));
+            }
+        }
+
         return $this->render('alerta/index.html.twig', [
-            'alertas' => $alertaRepository->findAll(),
+            'alertas' => $alertas,
+            'inmuebles' => $inmuebles,
+            'fotos' => $fotos
         ]);
     }
 
