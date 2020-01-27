@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/cita")
@@ -105,5 +106,32 @@ class CitaController extends AbstractController
         }
 
         return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+    }
+
+    /**
+     * @Route("/ajax/ajaxGetCitas", name="cita_ajaxGetCitas", methods={"POST"})
+    */
+    public function ajaxGetCitas(CitaRepository $citaRepository, Request $request): JsonResponse
+    {
+        
+        $session = $request->getSession();
+
+        $result = $citaRepository->findByIdusuario($session->get("usuario_id"));
+
+        
+        $citas = array();
+
+        foreach($result as $res){
+            $norm = array();
+            $norm["id"]=$res->getId();
+            $norm["fechaHora"]=$res->getFechaHora();
+            $norm["id_usuario1"]=$res->getIdUsuario1();
+            $norm["id_usuario2"]=$res->getIdUsuario2();
+            $norm["direccion"]=$res->getDireccion();
+            $norm["ciudad"]=$res->getCiudad();
+            $citas[]=$norm;
+        }
+
+        return new JsonResponse($citas);
     }
 }

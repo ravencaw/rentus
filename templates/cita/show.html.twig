@@ -34,9 +34,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">back to list</a>
+    <div id="map" class="col-md-12"></div>
 
-    <a href="{{ path('cita_edit', {'id': citum.id}) }}">edit</a>
+    <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Volver al calendario</a>
+
+    <a href="{{ path('cita_edit', {'id': citum.id}) }}">Editar cita</a>
 
     {{ include('cita/_delete_form.html.twig') }}
 {% endblock %}

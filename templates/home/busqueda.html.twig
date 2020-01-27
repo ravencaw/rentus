@@ -61,7 +61,7 @@
             <a href="resultado/{{ inmueble.id }}">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        {% if fotos[inmueble.id] %}
+                        {% if fotos %}
                             <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="...">
                         {% else %}
                             <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="...">

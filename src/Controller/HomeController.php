@@ -45,17 +45,17 @@ class HomeController extends AbstractController
         
         if(isset($_POST["buscar"])){
             $inmuebles = null;
-            
+            $fotos = array();
             if(!$_POST["busqueda"]["ciudad"]){
                 echo "<div class='alert alert-danger' role='alert'>Debe introducir una ciudad o un codigo postal</div>";
+                return $this->redirectToRoute('home_index');
             }else if($_POST["busqueda"]["tipo"]=="0"){
                 echo "<div class='alert alert-danger' role='alert'>Debe seleccionar un tipo de busqueda</div>";
+                return $this->redirectToRoute('home_index');
             }else{
                 $inmuebles = $this->getDoctrine()
                 ->getRepository(Inmueble::class)
                 ->findBy(array('ciudad'=>$_POST["busqueda"]["ciudad"], 'tipoInmueble'=>$_POST["busqueda"]["tipo"]));
-            
-                $fotos = array();
 
                 foreach($inmuebles as $in){
                     $fotos[$in->getId()] = $this->getDoctrine()

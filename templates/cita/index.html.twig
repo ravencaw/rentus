@@ -5,37 +5,11 @@
 {% block body %}
     <h1>Citas</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Fecha_hora</th>
-                <th>Convocante</th>
-                <th>Convocado</th>
-                <th>Direccion</th>
-                <th>Ciudad</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for citum in citas %}
-            <tr>
-                <td>{{ citum.fechaHora ? citum.fechaHora|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ citum.idUsuario1 }}</td>
-                <td>{{ citum.idUsuario2 }}</td>
-                <td>{{ citum.direccion }}</td>
-                <td>{{ citum.ciudad }}</td>
-                <td>
-                    <a href="{{ path('cita_show', {'id': citum.id}) }}">show</a>
-                    <a href="{{ path('cita_edit', {'id': citum.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="monthly" id="mycalendar"></div>
 
     <a class="btn btn-light" href="{{ path('cita_new') }}">Añadir cita</a>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/calendar/monthly.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/cita/cita.js') }}"></script>
 {% endblock %}
