@@ -3,29 +3,69 @@
 {% block title %}Busqueda{% endblock %}
 
 {% block body %}
- <div class="busqueda">
- <div id="wrapper" class="container col-md-12" style="margin: 0px;color: rgb(0,0,0);background-color: rgba(39,104,104,0);">
+
+ <div class="busqueda col-md-12">
+ {% if inmuebles %}
+    <div id="wrapper" class="container" style="margin: 0px; margin-bottom:20%;color: rgb(0,0,0);background-color: rgba(39,104,104,0);">
             <div id="#sidebar-wrapper" class="col-md-2" style="color: rgb(0,0,0);padding: 0px;background-color: rgba(39,104,104,0);">
-                <div id="sidebar-wrapper" style="background-color: rgb(39,104,104);color: rgb(0,0,0);text-align:right;">
+                <div id="sidebar-wrapper" style="background-color: rgb(39,104,104);color: rgb(0,0,0);text-align:left;">
+                    <form method="post" id="filtro_form">
                     <ul class="sidebar-nav">
-                        <li>Precio </li>
-                        <li>Precio/m<sup>2</sup> </li>
-                        <li>Superficie </li>
-                        <li>Zona </li>
-                        <li>Nº de habitaciones </li>
-                        <li>Nº de baños </li>
-                        <li>Extras </li>
-                        <li>Inmobiliaria </li>
+                        <li>
+                            Tipo
+                            <select id="tipo" class="form-control filter">
+                                <option value="venta">Venta</option>
+                                <option value="alquiler">Alquiler</option>
+                            </select> 
+                        </li>
+                        <li>
+                            Precio<br>
+                            <input type="number" class="form-control col-md-12 filter" id="precio_min" placeholder="Precio mínimo">
+                            <input type="number" class="form-control col-md-12 filter" id="precio_max"  style="margin-top:10px;" placeholder="Precio máximo">
+                         </li>
+                        <li>
+                            Precio/m<sup>2</sup> 
+                            <input type="number" class="form-control col-md-12 filter" id="precio_metro_cuadrado">
+                        </li>
+                        <li>
+                            Superficie 
+                            <input type="number" class="form-control col-md-12 filter" id="superficie">
+                        </li>
+                        <li>
+                            Zona
+                            <select id="zona" class="form-control filter">
+                                <option value="0">Seleccione una zona...</option>
+                                <option value="centro">Centro</option>
+                                <option value="cerca_centro">Cerca del centro</option>
+                                <option value="periferia">Periferia</option>
+                                <option value="extrarradio">Extrarradio</option>
+                                <option value="afueras">Afueras</option>
+                            </select> 
+                        </li>
+                        <li>
+                            Nº de habitaciones 
+                            <input type="number" class="form-control col-md-12 filter" id="n_habitaciones">
+                        </li>
+                        <li>
+                            Nº de baños 
+                            <input type="number" class="form-control col-md-12 filter" id="n_baños">
+                        </li>
                      </ul>
+                     </form>
                  </div>
-             </div>   
-         </div>
+             </div>
+{% endif %}
+    <div class="resultados">   
 {% for inmueble in inmuebles %}
-        <div class="card mb-3 col-md-9">
+        <div class="card mb-3 col-md-12">
             <a href="resultado/{{ inmueble.id }}">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="...">
+                        {% if fotos[inmueble.id] %}
+                            <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="...">
+                        {% else %}
+                            <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="...">
+                        {% endif %}
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -35,12 +75,18 @@
                             <p class="card-text"><small class="text-muted">{{ inmueble.superficie }} m<sup>2</sup> - {{ (inmueble.precio/inmueble.superficie)|round(2,'floor') }} €/m<sup>2</sup></small></p>
                         </div>
                     </div>
-                </div>
-            </a>
+                 </div>
+             </a>
         </div>
         
 {% else %}
     <span align="center">No se han encontrado registros</span>
 {% endfor %}
+    </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/home/busqueda.js') }}"></script>
 {% endblock %}

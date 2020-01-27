@@ -35,7 +35,6 @@ function initMap(longitud, latitud, direccion) {
 function ajaxGetLocaclizacion(){
 var idInmueble = parseInt($("#idInmueble").val());
     
-    var localizacion;
     $.ajax({
       method: "POST",
       url: "../ajax/ajaxGetLocalizacion/"+idInmueble,

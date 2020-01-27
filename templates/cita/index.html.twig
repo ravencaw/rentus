@@ -1,26 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
-{% block title %}Cita index{% endblock %}
+{% block title %}Citas{% endblock %}
 
 {% block body %}
-    <h1>Cita index</h1>
+    <h1>Citas</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Fecha_hora</th>
-                <th>Id_usuario1</th>
-                <th>Id_usuario2</th>
+                <th>Convocante</th>
+                <th>Convocado</th>
                 <th>Direccion</th>
                 <th>Ciudad</th>
-                <th>actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for citum in citas %}
             <tr>
-                <td>{{ citum.id }}</td>
                 <td>{{ citum.fechaHora ? citum.fechaHora|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ citum.idUsuario1 }}</td>
                 <td>{{ citum.idUsuario2 }}</td>
@@ -39,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('cita_new') }}">Create new</a>
+    <a class="btn btn-light" href="{{ path('cita_new') }}">Añadir cita</a>
 {% endblock %}

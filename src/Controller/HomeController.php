@@ -101,4 +101,46 @@ class HomeController extends AbstractController
 
         return new JsonResponse($result);
     }
+    /**
+     * @Route("/ajax/ajaxGetInmuebles", name="home_ajaxGetInmuebles", methods={"POST"})
+     */
+    public function ajaxGetInmuebles(InmuebleRepository $inmuebleRepository): JsonResponse
+    {
+        $array_filtros = array();
+
+        $array_filtros["tipo"] = $_POST["tipo"];
+
+        if($_POST["precio_min"]){
+            $array_filtros["precio_min"]=$_POST["precio_min"];
+        }
+        if($_POST["precio_max"]){
+            $array_filtros["precio_max"]=$_POST["precio_max"];
+        }
+        if($_POST["precio_metro_cuadrado"]){
+            $array_filtros["precio_metro_cuadrado"]=$_POST["precio_metro_cuadrado"];
+        }
+        if($_POST["superficie"]){
+            $array_filtros["superficie"]=$_POST["superficie"];
+        }
+        if($_POST["zona"] && $_POST["zona"]!="0"){
+            $array_filtros["zona"]=$_POST["zona"];
+        }
+        if($_POST["n_habitaciones"]){
+            $array_filtros["n_habitaciones"]=$_POST["n_habitaciones"];
+        }
+        if($_POST["n_baños"]){
+            $array_filtros["n_banyos"]=$_POST["n_baños"];
+        }
+
+        $result = $inmuebleRepository->findInmueblesFiltrados($array_filtros);
+        $inmuebles = array();
+
+        foreach($result as $res){
+            $normalizers = new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer();
+            $norm = $normalizers->normalize($res);
+            $inmuebles[]=$norm;
+        }
+        
+        return new JsonResponse($inmuebles);
+    }
 }

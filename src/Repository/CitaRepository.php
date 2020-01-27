@@ -22,19 +22,16 @@ class CitaRepository extends ServiceEntityRepository
     // /**
     //  * @return Cita[] Returns an array of Cita objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findByIdusuario($id_usuario)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('c.id_usuario1 = :usuario OR c.id_usuario2 = :usuario')
+            ->setParameter('usuario', $id_usuario)
+            ->orderBy('c.fecha_hora', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Cita

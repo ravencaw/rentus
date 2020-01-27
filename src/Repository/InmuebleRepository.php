@@ -22,19 +22,47 @@ class InmuebleRepository extends ServiceEntityRepository
     // /**
     //  * @return Inmueble[] Returns an array of Inmueble objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findInmueblesFiltrados($array_filtros)
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('i')
+        ->where('i.tipoInmueble = :tipo')
+        ->setParameter('tipo', $array_filtros["tipo"])
         ;
+        
+        if(isset($array_filtros["precio_min"])){
+            $qb -> andWhere('i.precio > :precio_min')
+            ->setParameter('precio_min', $array_filtros["precio_min"]);
+        }
+        if(isset($array_filtros["precio_max"])){
+            $qb -> andWhere('i.precio < :precio_max')
+            ->setParameter('precio_max', $array_filtros["precio_max"]);
+        }
+
+        if(isset($array_filtros["superficie"])){
+            $qb -> andWhere('i.superficie = :superficie')
+            ->setParameter('superficie', $array_filtros["superficie"]);
+        }
+
+        if(isset($array_filtros["zona"])){
+            $qb -> andWhere('i.zona = :zona')
+            ->setParameter('zona', $array_filtros["zona"]);
+        }
+        if(isset($array_filtros["n_habitaciones"])){
+            $qb -> andWhere('i.habitaciones = :n_habitaciones')
+            ->setParameter('n_habitaciones', $array_filtros["n_habitaciones"]);
+        }
+        if(isset($array_filtros["n_banyos"])){
+            $qb -> andWhere('i.bathroom = :n_banyos')
+            ->setParameter('n_banyos', $array_filtros["n_banyos"]);
+        }
+
+        $query = $qb->getQuery();
+        $inmuebles = $query->getResult();
+
+        return $inmuebles;
     }
-    */
+    
 
     
     public function findOneById($id): array

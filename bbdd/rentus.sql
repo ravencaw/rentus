@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 03-01-2020 a las 13:08:54
--- Versión del servidor: 10.1.38-MariaDB
--- Versión de PHP: 7.3.3
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 27-01-2020 a las 01:00:33
+-- Versión del servidor: 10.4.8-MariaDB
+-- Versión de PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,8 +21,17 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `rentus`
 --
-CREATE DATABASE IF NOT EXISTS `rentus` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci;
-USE `rentus`;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alerta`
+--
+
+CREATE TABLE `alerta` (
+  `id_inmueble` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -32,10 +41,47 @@ USE `rentus`;
 
 CREATE TABLE `chat` (
   `id` int(11) NOT NULL,
-  `idUsuario1` int(11) NOT NULL,
-  `idUsuario2` int(11) NOT NULL,
+  `id_usuario1` int(11) NOT NULL,
+  `id_usuario2` int(11) NOT NULL,
   `asunto` varchar(300) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cita`
+--
+
+CREATE TABLE `cita` (
+  `id` int(11) NOT NULL,
+  `fecha_hora` datetime NOT NULL,
+  `id_usuario1` int(11) NOT NULL,
+  `id_usuario2` int(11) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `longitud` varchar(255) NOT NULL,
+  `latitud` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cita`
+--
+
+INSERT INTO `cita` (`id`, `fecha_hora`, `id_usuario1`, `id_usuario2`, `direccion`, `ciudad`, `longitud`, `latitud`) VALUES
+(1, '2020-02-04 19:00:00', 34, 1, 'Calle Galera 17', 'Sevilla', '', ''),
+(2, '2020-01-18 20:15:00', 2, 1, 'Plaza Nueva 7', 'Granada', '', ''),
+(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'Sevilla', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favorito`
+--
+
+CREATE TABLE `favorito` (
+  `id_usuario` int(11) NOT NULL,
+  `id_inmueble` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -45,9 +91,19 @@ CREATE TABLE `chat` (
 
 CREATE TABLE `foto` (
   `id` int(11) NOT NULL,
-  `idInmueble` int(11) NOT NULL,
+  `id_inmueble` int(11) NOT NULL,
   `ruta` text COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `foto`
+--
+
+INSERT INTO `foto` (`id`, `id_inmueble`, `ruta`) VALUES
+(1, 1, 'maxresdefault.jpg'),
+(2, 1, 'maxresdefault1.jpg'),
+(3, 2, 'maxresdefault2.jpg'),
+(4, 2, 'maxresdefault3.jpg');
 
 -- --------------------------------------------------------
 
@@ -61,9 +117,17 @@ CREATE TABLE `inmobiliaria` (
   `direccion` text COLLATE utf8_spanish2_ci NOT NULL,
   `nif` varchar(7) COLLATE utf8_spanish2_ci NOT NULL,
   `telefono` int(9) NOT NULL,
-  `idUsuarioAdmin` int(11) NOT NULL,
+  `id_usuario_admin` int(11) NOT NULL,
   `logo` text COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `inmobiliaria`
+--
+
+INSERT INTO `inmobiliaria` (`id`, `nombre`, `direccion`, `nif`, `telefono`, `id_usuario_admin`, `logo`) VALUES
+(5, 'Inmo1', 'Calle nueva', '2433543', 656345345, 34, 'C:\\xampp\\tmp\\phpCC24.tmp'),
+(6, 'Inmobiliaria Juan Alberto', 'Calle Falsa 2', '342344A', 667678678, 36, 'C:\\xampp\\tmp\\php1DC4.tmp');
 
 -- --------------------------------------------------------
 
@@ -73,22 +137,32 @@ CREATE TABLE `inmobiliaria` (
 
 CREATE TABLE `inmueble` (
   `id` int(11) NOT NULL,
-  `tipoInmueble` int(11) NOT NULL,
-  `precio` int(11) NOT NULL,
-  `superficie` int(11) NOT NULL,
-  `ciudad` varchar(255) NOT NULL,
-  `cp` int(11) NOT NULL,
-  `longitud`varchar(255) NOT NULL,
-  `latitud`varchar(255) NOT NULL,
+  `tipo_inmueble` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
+  `precio` float NOT NULL,
+  `superficie` float NOT NULL,
   `direccion` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
-  `zona` varchar(255) NOT NULL,
+  `zona` varchar(255) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'centro',
+  `ciudad` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
+  `cp` int(11) NOT NULL,
+  `longitud` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
+  `latitud` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
   `habitaciones` int(11) NOT NULL,
   `bathroom` int(11) NOT NULL,
   `comentarios` text COLLATE utf8_spanish2_ci NOT NULL,
   `extras` text COLLATE utf8_spanish2_ci NOT NULL,
-  `idCreador` int(11) NOT NULL,
+  `id_creador` int(11) NOT NULL,
   `disponible` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `inmueble`
+--
+
+INSERT INTO `inmueble` (`id`, `tipo_inmueble`, `precio`, `superficie`, `direccion`, `zona`, `ciudad`, `cp`, `longitud`, `latitud`, `habitaciones`, `bathroom`, `comentarios`, `extras`, `id_creador`, `disponible`) VALUES
+(1, 'venta', 260000, 150, 'Calle Encarnacion nº9', 'centro', 'Antequera', 29202, '-4.5579117', '37.0169032', 3, 2, 'Piso en pleno centro de Antequera', 'Terraza, calefaccion, aire acondicionado', 34, 1),
+(2, 'venta', 160000, 100, 'Calle Toril nº12 2ºA', 'centro', 'Antequera', 29200, '', '', 2, 1, 'Piso en la calle Toril', 'Calefaccion, bañera', 2, 0),
+(3, 'alquiler', 420, 90, 'Calle Galera 17', 'centro', 'Sevilla', 41001, '-5.999035', '37.3880055', 2, 2, 'Piso en pleno centro de Sevilla', '1 sala de estar\r\n1 salon\r\n1 cocina\r\nAmueblado', 34, 1),
+(5, 'venta', 350000, 100, 'Calle Trasierras 5', 'centro', 'Antequera', 29200, '-4.5574382', '37.0198236', 3, 1, 'Piso amueblado en pleno centro de Antequera', 'Amueblado\r\nTerraza', 34, 1);
 
 -- --------------------------------------------------------
 
@@ -98,7 +172,7 @@ CREATE TABLE `inmueble` (
 
 CREATE TABLE `mensaje` (
   `id` int(11) NOT NULL,
-  `idChat` int(11) NOT NULL,
+  `id_chat` int(11) NOT NULL,
   `fecha` datetime NOT NULL,
   `texto` text COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -115,18 +189,48 @@ CREATE TABLE `usuario` (
   `correo` varchar(60) COLLATE utf8_spanish2_ci NOT NULL,
   `telefono` int(9) NOT NULL,
   `password` varchar(60) COLLATE utf8_spanish2_ci NOT NULL,
-  `idInmobiliaria` int(11) DEFAULT NULL
+  `id_inmobiliaria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre`, `correo`, `telefono`, `password`, `id_inmobiliaria`) VALUES
+(1, 'Pepe', 'pepe@mail.com', 645556677, 'pepe1234', NULL),
+(2, 'Juan', 'juan@mail.com', 657452375, 'juan1234', NULL),
+(7, 'Pablo Perez', 'pabper@mail.com', 685749632, 'pabper', NULL),
+(34, 'Pedro Perez', 'pedper@mail.com', 685849632, 'pedper', 5),
+(35, 'Juan Benitez', 'juaben@mail.com', 684990930, 'juaben', NULL),
+(36, 'Juan Alberto', 'juanalb@mail.com', 677867876, 'juanalb', 6);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `alerta`
+--
+ALTER TABLE `alerta`
+  ADD PRIMARY KEY (`id_inmueble`);
+
+--
 -- Indices de la tabla `chat`
 --
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `cita`
+--
+ALTER TABLE `cita`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `favorito`
+--
+ALTER TABLE `favorito`
+  ADD PRIMARY KEY (`id_usuario`);
 
 --
 -- Indices de la tabla `foto`
@@ -147,6 +251,12 @@ ALTER TABLE `inmueble`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `mensaje`
+--
+ALTER TABLE `mensaje`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -163,28 +273,34 @@ ALTER TABLE `chat`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `cita`
+--
+ALTER TABLE `cita`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `foto`
 --
 ALTER TABLE `foto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `inmobiliaria`
 --
 ALTER TABLE `inmobiliaria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

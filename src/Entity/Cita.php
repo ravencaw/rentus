@@ -105,4 +105,29 @@ class Cita
 
         return $this;
     }
+
+    public function getLongitud(): ?string
+    {
+        return $this->longitud;
+    }
+
+    public function setLongitud(string $longitud): self
+    {
+        $this->longitud = $longitud;
+
+        return $this;
+    }
+
+
+    public function getLatitud(): ?string
+    {
+        return $this->latitud;
+    }
+    
+    public function setLatitud(string $latitud): self
+    {
+        $this->latitud = $latitud;
+
+        return $this;
+    }
 }

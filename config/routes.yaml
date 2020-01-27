@@ -1,6 +1,18 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /home
+    controller: App\Controller\HomeController::index
+
+cita_edit:
+  path: /cita/{id}/edit
+  controller: App\Controller\CitaController::edit
+
+cita_show:
+  path: /cita/show/{id}
+  controller: App\Controller\CitaController::show
+    
+cita_new:
+  path: /cita/new
+  controller: App\Controller\CitaController::new
 
 login:
   path: /login
@@ -25,6 +37,11 @@ home_resultado:
 home_ajaxGetLocalizacion:
   path: /home/ajax/ajaxGetLocalizacion/{id}
   controller: App\Controller\HomeController::ajaxGetLocalizacion
+  methods: [POST]
+  
+home_ajaxGetInmuebles:
+  path: /home/ajax/ajaxGetInmuebles
+  controller: App\Controller\HomeController::ajaxGetInmuebles
   methods: [POST]
 
 sign_up:

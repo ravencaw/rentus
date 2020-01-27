@@ -16,12 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class CitaController extends AbstractController
 {
     /**
-     * @Route("/", name="cita_index", methods={"GET"})
+     * @Route("/index/{id}", name="cita_index", methods={"GET"})
      */
-    public function index(CitaRepository $citaRepository): Response
+    public function index($id, CitaRepository $citaRepository): Response
     {
         return $this->render('cita/index.html.twig', [
-            'citas' => $citaRepository->findAll(),
+            'citas' => $citaRepository->findByIdusuario($id),
         ]);
     }
 
@@ -30,16 +30,29 @@ class CitaController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $session = $request->getSession();
+
         $citum = new Cita();
         $form = $this->createForm(CitaType::class, $citum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
+            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+            $geo = json_decode($geo, true);
+
+
+            $latitud = $geo['results'][0]['geometry']['location']['lat'];
+            $longitud = $geo['results'][0]['geometry']['location']['lng'];
+            
+            $citum->setLatitud($latitud);
+            $citum->setLongitud($longitud);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($citum);
             $entityManager->flush();
 
-            return $this->redirectToRoute('cita_index');
+            return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
         }
 
         return $this->render('cita/new.html.twig', [
@@ -83,12 +96,14 @@ class CitaController extends AbstractController
      */
     public function delete(Request $request, Cita $citum): Response
     {
+        $session = $request->getSession();
+
         if ($this->isCsrfTokenValid('delete'.$citum->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($citum);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('cita_index');
+        return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
     }
 }
