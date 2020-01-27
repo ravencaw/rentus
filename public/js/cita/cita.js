@@ -1,8 +1,11 @@
 $(document).ready(function(){
+    var idUsuario = $("#idUsuario").val();
+
     $.ajax({
         method: "POST",
-        url: "../ajax/ajaxGetCitas",
+        url: "../ajax/ajaxGetCitas/"+idUsuario,
         dataType: 'json',
+        data: {"idUsuario" : idUsuario},
         success: function (result) {
 
             var eventos = new Array();
@@ -16,7 +19,7 @@ $(document).ready(function(){
                 evento.startdate=fechaHora[0];
                 evento.starttime=fechaHora[1];
                 evento.color="#FFB128";
-                evento.url="";
+                evento.url="/cita/show/"+element.id;
 
                 eventos.push(evento);
             });

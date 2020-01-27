@@ -33,6 +33,17 @@ class CitaRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOneById($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->where("u.id = :id")
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->setMaxResults(1)->getOneOrNullResult()
+        ;
+
+    }
+
     /*
     public function findOneBySomeField($value): ?Cita
     {

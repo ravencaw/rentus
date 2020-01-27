@@ -1,6 +1,6 @@
 index:
-    path: /home
-    controller: App\Controller\HomeController::index
+  path: /home
+  controller: App\Controller\HomeController::index
 
 cita_edit:
   path: /cita/{id}/edit
@@ -15,8 +15,12 @@ cita_new:
   controller: App\Controller\CitaController::new
 
 cita_ajaxGetCitas:
-  path: /cita/ajax/ajaxGetCitas
+  path: /cita/ajax/ajaxGetCitas/{id}
   controller: App\Controller\CitaController::ajaxGetCitas
+
+cita_ajaxGetLocalizacion:
+  path: /cita/ajax/ajaxGetLocalizacion/{id}
+  controller: App\Controller\CitaController::ajaxGetLocalizacion
 
 favorito_new:
   path: /favorito/new/{idInmueble}

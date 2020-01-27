@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Citas</h1>
-
+    <input type="hidden" value="{{ id_usuario }}" id="idUsuario"/>
     <div class="monthly" id="mycalendar"></div>
 
     <a class="btn btn-light" href="{{ path('cita_new') }}">Añadir cita</a>

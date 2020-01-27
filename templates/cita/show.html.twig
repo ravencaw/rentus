@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ citum.id }}</td>
+                <td id="id">{{ citum.id }}</td>
             </tr>
             <tr>
                 <th>Fecha_hora</th>
@@ -33,7 +33,9 @@
             </tr>
         </tbody>
     </table>
-
+    <br>
+    <h1>Lugar de encuentro</h1>
+    <hr>
     <div id="map" class="col-md-12"></div>
 
     <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Volver al calendario</a>
@@ -43,7 +45,6 @@
     {{ include('cita/_delete_form.html.twig') }}
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('js/cita/show.js') }}">
-        var latitud = "hola";
-    </script>
+    <script src="{{ asset('js/cita/show.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g&callback=initMap"></script>
 {% endblock %}

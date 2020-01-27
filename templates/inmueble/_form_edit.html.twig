@@ -1,0 +1,10 @@
+{{ form_start(form, {'multipart':true}) }}
+    {{ form_widget(form) }}
+    <div class="col-md-12" id="imagenes">
+        <h1>Añadir fotos</h1>
+        <hr>
+        <button class="btn btn-success col-md-12" id="anyadirFoto"><i class="fa fa-plus"></i></button><br>
+    </div>
+    <br>
+    <button class="btn btn-primary">{{ button_label|default('Guardar') }}</button>
+{{ form_end(form) }}

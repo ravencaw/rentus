@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Inmueble;
+use App\Entity\Foto;
 use App\Form\InmuebleType;
+use App\Form\FotoType;
 use App\Repository\InmuebleRepository;
+use App\Repository\FotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -97,7 +100,11 @@ class InmuebleController extends AbstractController
             $inmueble->setLongitud($longitud);
 
             $this->getDoctrine()->getManager()->flush();
+            
+            if(sizeof($_FILES)>0){
 
+            }
+            
             return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
         }
 

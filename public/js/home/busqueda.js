@@ -30,7 +30,26 @@ function ajaxGetInmuebles(tipo, precio_min, precio_max, superficie, precio_metro
               "n_baños": n_baños
             },
           success: function (result) {
-              console.log(result);
+              $(".resultados").empty();
+              result.forEach(element => {
+                $(".resultados").append("<div class='card mb-3 col-md-12'>"+
+                "<a href='resultado/"+element.id+"'>"+
+                    "<div class='row no-gutters'>"+
+                        "<div class='col-md-4'>"+
+                                "<img src='../public/img/no_image.jpg' class='card-img'/>"+
+                        "</div>"+
+                        "<div class='col-md-8'>"+
+                            "<div class='card-body'>"+
+                                "<h5 class='card-title'>"+element.direccion+"</h5>"+
+                                "<p class='card-text'>Precio:"+ element.precio+ "€</p>"+
+                                "<p class='card-text'>"+element.ciudad+" "+ element.cp +"</p>"+
+                                "<p class='card-text'><small class='text-muted'>"+ element.superficie +" m<sup>2</sup> - "+Math.round((element.precio/element.superficie), 2)+" €/m<sup>2</sup></small></p>"+
+                            "</div>"+
+                        "</div>"+
+                     "</div>"+
+                 "</a>"+
+            "</div>");
+              });
           }
         });
       }

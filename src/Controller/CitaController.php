@@ -22,7 +22,8 @@ class CitaController extends AbstractController
     public function index($id, CitaRepository $citaRepository): Response
     {
         return $this->render('cita/index.html.twig', [
-            'citas' => $citaRepository->findByIdusuario($id),
+            'id_usuario' => $id,
+
         ]);
     }
 
@@ -75,20 +76,33 @@ class CitaController extends AbstractController
     /**
      * @Route("/{id}/edit", name="cita_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Cita $citum): Response
+    public function edit($id, Request $request, Cita $citum): Response
     {
+        $session = $request->getSession();
+
         $form = $this->createForm(CitaType::class, $citum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
+            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+            $geo = json_decode($geo, true);
+
+
+            $latitud = $geo['results'][0]['geometry']['location']['lat'];
+            $longitud = $geo['results'][0]['geometry']['location']['lng'];
+            
+            $citum->setLatitud($latitud);
+            $citum->setLongitud($longitud);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('cita_index');
+            return $this->redirectToRoute('cita_show', array("id"=>$id));
         }
 
         return $this->render('cita/edit.html.twig', [
             'citum' => $citum,
             'form' => $form->createView(),
+            'idCita'=>$id
         ]);
     }
 
@@ -116,7 +130,7 @@ class CitaController extends AbstractController
         
         $session = $request->getSession();
 
-        $result = $citaRepository->findByIdusuario($session->get("usuario_id"));
+        $result = $citaRepository->findByIdusuario($_POST["idUsuario"]);
 
         
         $citas = array();
@@ -134,4 +148,27 @@ class CitaController extends AbstractController
 
         return new JsonResponse($citas);
     }
+
+    /**
+     * @Route("/ajax/ajaxGetLocalizacion", name="cita_ajaxGetLocalizacion", methods={"POST"})
+     */
+    public function ajaxGetLocalizacion(CitaRepository $citaRepository): JsonResponse
+    {
+        $result = $citaRepository->findOneById($_POST["id"]);
+
+        $norm = array();
+        $norm["id"]=$result->getId();
+        $norm["fechaHora"]=$result->getFechaHora();
+        $norm["id_usuario1"]=$result->getIdUsuario1();
+        $norm["id_usuario2"]=$result->getIdUsuario2();
+        $norm["direccion"]=$result->getDireccion();
+        $norm["ciudad"]=$result->getCiudad();
+        $norm["longitud"]=$result->getLongitud();
+        $norm["latitud"]=$result->getLatitud();
+        
+
+        return new JsonResponse($norm);
+    }
+
+    
 }
