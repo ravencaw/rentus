@@ -26,26 +26,23 @@ class AlertaController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="alerta_new", methods={"GET","POST"})
+     * @Route("/new/{idInmueble}", name="alerta_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new($idInmueble, Request $request): Response
     {
+        $session = $request->getSession();
+
         $alertum = new Alerta();
-        $form = $this->createForm(AlertaType::class, $alertum);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($alertum);
-            $entityManager->flush();
+        $alertum->setIdUsuario($session->get("usuario_id"));
+        $alertum->setIdInmueble($idInmueble);
 
-            return $this->redirectToRoute('alerta_index');
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($alertum);
+        $entityManager->flush();
 
-        return $this->render('alerta/new.html.twig', [
-            'alertum' => $alertum,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+       
     }
 
     /**
@@ -79,10 +76,16 @@ class AlertaController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="alerta_delete", methods={"DELETE"})
+     * @Route("/delete/{idInmueble}", name="alerta_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Alerta $alertum): Response
+    public function delete($idInmueble, Request $request): Response
     {
+        $session = $request->getSession();
+
+        $alerta=$this->getDoctrine()
+        ->getRepository(Alerta::class)
+        ->findBy(array('id_inmueble'=>$idInmueble, 'id_usuario'=>$session->get("usuario_id")));
+
         if ($this->isCsrfTokenValid('delete'.$alertum->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($alertum);

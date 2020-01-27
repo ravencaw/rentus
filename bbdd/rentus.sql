@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-01-2020 a las 01:00:33
+-- Tiempo de generación: 27-01-2020 a las 04:21:56
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -29,9 +29,17 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `alerta` (
+  `id` int(11) NOT NULL,
   `id_inmueble` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `alerta`
+--
+
+INSERT INTO `alerta` (`id`, `id_inmueble`, `id_usuario`) VALUES
+(1, 3, 34);
 
 -- --------------------------------------------------------
 
@@ -79,9 +87,17 @@ INSERT INTO `cita` (`id`, `fecha_hora`, `id_usuario1`, `id_usuario2`, `direccion
 --
 
 CREATE TABLE `favorito` (
+  `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_inmueble` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `favorito`
+--
+
+INSERT INTO `favorito` (`id`, `id_usuario`, `id_inmueble`) VALUES
+(1, 34, 3);
 
 -- --------------------------------------------------------
 
@@ -212,7 +228,7 @@ INSERT INTO `usuario` (`id`, `nombre`, `correo`, `telefono`, `password`, `id_inm
 -- Indices de la tabla `alerta`
 --
 ALTER TABLE `alerta`
-  ADD PRIMARY KEY (`id_inmueble`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `chat`
@@ -230,7 +246,7 @@ ALTER TABLE `cita`
 -- Indices de la tabla `favorito`
 --
 ALTER TABLE `favorito`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `foto`
@@ -267,6 +283,12 @@ ALTER TABLE `usuario`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `alerta`
+--
+ALTER TABLE `alerta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `chat`
 --
 ALTER TABLE `chat`
@@ -277,6 +299,12 @@ ALTER TABLE `chat`
 --
 ALTER TABLE `cita`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `favorito`
+--
+ALTER TABLE `favorito`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `foto`

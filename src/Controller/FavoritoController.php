@@ -26,26 +26,23 @@ class FavoritoController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="favorito_new", methods={"GET","POST"})
+     * @Route("/new/{idInmueble}", name="favorito_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new($idInmueble, Request $request)
     {
+        $session = $request->getSession();
+
         $favorito = new Favorito();
-        $form = $this->createForm(FavoritoType::class, $favorito);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($favorito);
-            $entityManager->flush();
+        $favorito->setIdUsuario($session->get("usuario_id"));
+        $favorito->setIdInmueble($idInmueble);
 
-            return $this->redirectToRoute('favorito_index');
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($favorito);
+        $entityManager->flush();
 
-        return $this->render('favorito/new.html.twig', [
-            'favorito' => $favorito,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+
     }
 
     /**
@@ -79,16 +76,18 @@ class FavoritoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="favorito_delete", methods={"DELETE"})
+     * @Route("/delete/{id}/{idInmueble}", name="favorito_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Favorito $favorito): Response
+    public function delete($id, $idInmueble, Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$favorito->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($favorito);
-            $entityManager->flush();
-        }
+        $favorito = $this->getDoctrine()
+        ->getRepository(Favorito::class)
+        ->find($id); 
+        print_r($favorito);exit;
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($favorito);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('favorito_index');
+        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
     }
 }

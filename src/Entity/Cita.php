@@ -41,6 +41,16 @@ class Cita
      */
     private $ciudad;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitud;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitud;
+
     public function getId(): ?int
     {
         return $this->id;

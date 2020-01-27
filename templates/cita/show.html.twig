@@ -40,3 +40,8 @@
 
     {{ include('cita/_delete_form.html.twig') }}
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/cita/cita.js') }}">
+        var latitud = "hola";
+    </script>
+{% endblock %}

@@ -6,10 +6,16 @@ namespace App\Controller;
 
 use App\Entity\Inmueble;
 use App\Entity\Foto;
+use App\Entity\Favorito;
+use App\Entity\Alerta;
 use App\Form\InmuebleType;
 use App\Form\FotoType;
+use App\Form\FavoritoType;
+use App\Form\AlertaType;
 use App\Repository\InmuebleRepository;
 use App\Repository\FotoRepository;
+use App\Repository\FavoritoRepository;
+use App\Repository\AlertaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,6 +79,8 @@ class HomeController extends AbstractController
          */
 
         //API Maps Key:  AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g 
+        
+        $session = $request->getSession();
 
         $inmueble = $this->getDoctrine()
         ->getRepository(Inmueble::class)
@@ -82,13 +90,23 @@ class HomeController extends AbstractController
         ->getRepository(Foto::class)
         ->findBy(array('idInmueble'=>$id));
 
+        $alerta =  $this->getDoctrine()
+        ->getRepository(Alerta::class)
+        ->findOneBy(array('id_inmueble'=>$id, 'id_usuario'=>$session->get("usuario_id")));
+        
+        $favorito =  $this->getDoctrine()
+        ->getRepository(Favorito::class)
+        ->findOneBy(array('id_inmueble'=>$id, 'id_usuario'=>$session->get("usuario_id")));
+
         if(!$inmueble){
             return $this->redirectToRoute('home_index');
         }
 
         return $this->render('home/resultado.html.twig', [
             'inmueble' => $inmueble,
-            'fotos' => $fotos
+            'fotos' => $fotos,
+            'favorito' => $favorito,
+            'alerta' => $alerta
         ]);
     }
 

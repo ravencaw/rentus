@@ -14,6 +14,22 @@ cita_new:
   path: /cita/new
   controller: App\Controller\CitaController::new
 
+favorito_new:
+  path: /favorito/new/{idInmueble}
+  controller: App\Controller\FavoritoController::new
+
+favorito_delete:
+  path: /favorito/delete/{id}/{idInmueble}
+  controller: App\Controller\FavoritoController::delete
+
+alerta_new:
+  path: /alerta/new/{idInmueble}
+  controller: App\Controller\AlertaController::new
+
+alerta_delete:
+  path: /alerta/delete/{idInmueble}
+  controller: App\Controller\AlertaController::delete
+
 login:
   path: /login
   controller: App\Controller\LoginController::index

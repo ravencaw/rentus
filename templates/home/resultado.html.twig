@@ -56,8 +56,18 @@
                 <div class="col-md-6">
                     {% if app.session.get('usuario_id')  %}
                     <ul class="list-unstyled text-left" style="margin-top: 30px;">
-                        <li style="padding-bottom: 10px;"><i class="fa fa-star"></i><a href="#">&nbsp;Añadir a favoritos</a></li>
-                        <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="#">Crear alerta</a></li>
+
+                        {% if favorito %}
+                            <li style="padding-bottom: 10px;"><i class="fa fa-star"></i><a href="{{ path('favorito_delete', {id: favorito.id, idInmueble: inmueble.id}) }}">&nbsp;Eliminar de favoritos</a></li>
+                        {% else %}
+                            <li style="padding-bottom: 10px;"><i class="fa fa-star"></i><a href="{{ path('favorito_new', {idInmueble: inmueble.id}) }}">&nbsp;Añadir a favoritos</a></li>
+                        {% endif %}
+
+                        {% if alerta %}
+                            <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="{{ path('alerta_delete', {idInmueble: inmueble.id}) }}">Eliminar alerta</a></li>
+                        {% else %}
+                            <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="{{ path('alerta_new', {idInmueble: inmueble.id}) }}">Crear alerta</a></li>
+                        {% endif %}
                         <li style="margin-bottom: 10px;"><i class="fa fa-star"></i>&nbsp;<a href="#">Abrir chat con vendedor/arrendador</a></li>
                     </ul>
                     {% else %}
