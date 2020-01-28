@@ -18,7 +18,7 @@ class UsuarioController extends AbstractController
     /**
      * @Route("/", name="usuario_index", methods={"GET"})
      */
-    public function index(UsuarioRepository $usuarioRepository, Request $request): Response
+    /*public function index(UsuarioRepository $usuarioRepository, Request $request): Response
     {
         $session = $request->getSession();
         if($session->get("usuario_id")){
@@ -32,7 +32,7 @@ class UsuarioController extends AbstractController
         }else{
             return $this->redirectToRoute('login');
         }
-    }
+    }*/
 
     /**
      * @Route("/new", name="usuario_new", methods={"GET","POST"})
@@ -43,8 +43,6 @@ class UsuarioController extends AbstractController
         $usuario = new Usuario();
         $form = $this->createForm(UsuarioType::class, $usuario);
         $form->handleRequest($request);
-
-        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $usuario_existe = $this->getDoctrine()
@@ -88,19 +86,23 @@ class UsuarioController extends AbstractController
         $session = $request->getSession();
 
         if($session->get("usuario_id")){
-            $form = $this->createForm(UsuarioType::class, $usuario);
-            $form->handleRequest($request);
+            if($usuario->getId()==$session->get("usuario_id")){
+                $form = $this->createForm(UsuarioType::class, $usuario);
+                $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $this->getDoctrine()->getManager()->flush();
 
-                return $this->redirectToRoute('usuario_index');
+                    return $this->redirectToRoute('usuario_edit', array("id"=>$session->get("usuario_id")));
+                }
+
+                return $this->render('usuario/edit.html.twig', [
+                    'usuario' => $usuario,
+                    'form' => $form->createView(),
+                ]);
+            }else{
+                return $this->redirectToRoute('usuario_edit', array("id"=>$session->get("usuario_id")));
             }
-
-            return $this->render('usuario/edit.html.twig', [
-                'usuario' => $usuario,
-                'form' => $form->createView(),
-            ]);
         }else{
             return $this->redirectToRoute('login');
         }

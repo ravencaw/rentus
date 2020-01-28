@@ -30,7 +30,7 @@ class AlertaController extends AbstractController
 
         if($session->get("usuario_id")){
         
-            $alertas = $alertaRepository->findBy(array("id_usuario"=>$idUsuario));
+            $alertas = $alertaRepository->findBy(array("id_usuario"=>$session->get("usuario_id")));
             $inmuebles = array();
             $fotos = array();
 
@@ -63,6 +63,7 @@ class AlertaController extends AbstractController
     public function new($idInmueble, Request $request): Response
     {
         $session = $request->getSession();
+
         if($session->get("usuario_id")){
             $alertum = new Alerta();
 
@@ -92,11 +93,17 @@ class AlertaController extends AbstractController
             ->getRepository(Alerta::class)
             ->find($id);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($alertum);
-            $entityManager->flush();
+            if($alertum->getIdUsuario() == $session->get("usuario_id")){
 
-            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($alertum);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('alerta_index',array("idUsuario"=>$session->get("usuario_id")));
+
+            }else{
+                return $this->redirectToRoute('alerta_index',array("idUsuario"=>$session->get("usuario_id")));
+            }
         }else{
             return $this->redirectToRoute('login');
         }

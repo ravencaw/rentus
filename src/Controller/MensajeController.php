@@ -58,19 +58,23 @@ class MensajeController extends AbstractController
         $session = $request->getSession();
 
         if($session->get("usuario_id")){
-            $inmueble =  $this->getDoctrine()
-            ->getRepository(Inmueble::class)
-            ->findOneBy(array('id'=>$mensaje->getIdInmueble()));
+            if($mensaje->getIdUsuarioReceptor()==$session->get("usuario_id")){
+                $inmueble =  $this->getDoctrine()
+                ->getRepository(Inmueble::class)
+                ->findOneBy(array('id'=>$mensaje->getIdInmueble()));
 
-            $usuario_existe = $this->getDoctrine()
-            ->getRepository(Usuario::class)
-            ->findOneBy(array("correo"=>$mensaje->getCorreo()));
+                $usuario_existe = $this->getDoctrine()
+                ->getRepository(Usuario::class)
+                ->findOneBy(array("correo"=>$mensaje->getCorreo()));
 
-            return $this->render('mensaje/show.html.twig', [
-                'mensaje' => $mensaje,
-                'inmueble' => $inmueble,
-                'usuario_existe' => $usuario_existe
-            ]);
+                return $this->render('mensaje/show.html.twig', [
+                    'mensaje' => $mensaje,
+                    'inmueble' => $inmueble,
+                    'usuario_existe' => $usuario_existe
+                ]);
+            }else{
+                return $this->redirectToRoute('mensaje_index');
+            }
         }else{
             return $this->redirectToRoute('login');
         }
@@ -84,15 +88,17 @@ class MensajeController extends AbstractController
         $session = $request->getSession();
 
         if($session->get("usuario_id")){
+            if($mensaje->getIdUsuarioReceptor()==$session->get("usuario_id")){
+                if ($this->isCsrfTokenValid('delete'.$mensaje->getId(), $request->request->get('_token'))) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($mensaje);
+                    $entityManager->flush();
+                }
 
-            if ($this->isCsrfTokenValid('delete'.$mensaje->getId(), $request->request->get('_token'))) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($mensaje);
-                $entityManager->flush();
+                return $this->redirectToRoute('mensaje_index');
+            }else{
+                return $this->redirectToRoute('mensaje_index');
             }
-
-            return $this->redirectToRoute('mensaje_index');
-
         }else{
             return $this->redirectToRoute('login');
         }

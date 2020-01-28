@@ -19,7 +19,7 @@ class InmobiliariaType extends AbstractType
             ->add('direccion', TextType::class)
             ->add('nif')
             ->add('telefono', TelType::class)
-            ->add('logo', FileType::class)
+            ->add('logo', FileType::class, array('data_class' => null))
         ;
     }
 

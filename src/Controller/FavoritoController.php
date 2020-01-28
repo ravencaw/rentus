@@ -29,7 +29,7 @@ class FavoritoController extends AbstractController
         $session = $request->getSession();
 
         if($session->get("usuario_id")){
-            $favoritos = $favoritoRepository->findBy(array("id_usuario"=>$idUsuario));
+            $favoritos = $favoritoRepository->findBy(array("id_usuario"=>$session->get("usuario_id")));
             $inmuebles = array();
             $fotos = array();
 
@@ -92,11 +92,15 @@ class FavoritoController extends AbstractController
             ->getRepository(Favorito::class)
             ->find($id); 
             
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($favorito);
-            $entityManager->flush();
+            if($favorito->getIdUsuario()==$session->get("usuario_id")){
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($favorito);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+                return $this->redirectToRoute('favorito_index',array("idUsuario"=>$session->get("usuario_id")));
+            }else{
+                return $this->redirectToRoute('favorito_index',array("idUsuario"=>$session->get("usuario_id")));
+            }
         }else{
             return $this->redirectToRoute('login');
         }

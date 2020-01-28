@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/monthly.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/jquery.flex-images.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -51,6 +50,9 @@
                         <li> <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Mis citas <i class="fa fa-calendar"></i></a></li>
                         <li> <a href="{{ path('favorito_index', {idUsuario: app.session.get('usuario_id')}) }}">Mis favoritos <i class="fa fa-heart"></i></a></li>
                         <li> <a href="{{ path('mensaje_index') }}">Mis mensajes <i class="fa fa-inbox"></i></a></li>
+                        {% if app.session.get('usuario_inmobiliaria')  %}
+                            <li> <a href="{{ path('inmobiliaria_edit', {id: app.session.get('usuario_inmobiliaria')}) }}">Gestionar inmobiliaria<i class="fa fa-edit"></i></a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

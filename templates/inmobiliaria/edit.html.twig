@@ -1,13 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Edit Inmobiliaria{% endblock %}
 
 {% block body %}
-    <h1>Edit Inmobiliaria</h1>
+    <h1>Gestionar inmobiliaria</h1>
 
-    {{ include('inmobiliaria/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('inmobiliaria/_form.html.twig', {'button_label': 'Guardar cambios'}) }}
 
-    <a href="{{ path('inmobiliaria_index') }}">back to list</a>
-
-    {{ include('inmobiliaria/_delete_form.html.twig') }}
 {% endblock %}
