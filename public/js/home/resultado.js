@@ -1,5 +1,14 @@
 $(document).ready(function(){
   ajaxGetLocaclizacion();
+  $(window).resize(function(){
+    if($(window).width() < 769){
+      $("#tarjeta_slider").removeClass("d-inline-flex");
+    }
+    if($(window).width() > 769){
+      $("#tarjeta_slider").addClass("d-inline-flex");
+    }
+  });
+  
 });
 
 function initMap(longitud, latitud, direccion) {

@@ -6,8 +6,8 @@
     <div resultado>
         <div class="login-clean" style="padding-top: 60px;padding-bottom: 60px;">
         <div style="padding: 20px;background-color: #dfe8ee;">
-            <div class="text-left d-inline-flex" style="width: 100%;margin-left: 0px;">
-                <div class="carousel slide" data-ride="carousel" id="carousel-1" style="width: 45%;">
+            <div id="tarjeta_slider" class="text-left d-inline-flex col-md-12" style="margin-left: 0px;">
+                <div class="carousel slide col-md-6" data-ride="carousel" id="carousel-1">
                     <div class="carousel-inner" role="listbox">
                     {% set j = 0 %}
                     {% for f in fotos %}
@@ -27,7 +27,7 @@
                     {% endfor %}
                     </ol>
                 </div>
-                <div class="card" style="width: 53%;margin-left: 20px;background-color: rgba(255,255,255,0.23);">
+                <div class="card col-md-6" style="background-color: rgba(255,255,255,0.23);">
                     <div class="card-body">
                         <input type="hidden" id="idInmueble" value="{{ inmueble.id }}"/>
                         <h4 class="card-title">{{ inmueble.direccion }}. Zona: {{ inmueble.zona }}</h4>
