@@ -5,11 +5,12 @@
 {% block body %}
 <div class="ciudad col-md-12 form-inline" style="padding:30px; background-color:white;">
     <div class="col-md-1"></div>
-    <input type="text" class="form-control filter col-md-6" placeholder="Ciudad..." id="ciudad"/>
+    <input type="text" class="form-control filter col-md-6" placeholder="Ciudad..." id="ciudad" value="{{ ciudad }}"/>
     <div class="col-md-1"></div>
     <select id="tipo" class="form-control filter col-md-3">
-        <option value="venta">Venta</option>
-        <option value="alquiler">Alquiler</option>
+        <option value="0" {% if tipo == "0" %} selected {% endif %}>Seleccione una opcion...</option>
+        <option value="venta" {% if tipo == "venta" %} selected {% endif %}>Venta</option>
+        <option value="alquiler" {% if tipo == "alquiler" %} selected {% endif %}>Alquiler</option>
     </select>
 </div>
 

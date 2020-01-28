@@ -46,6 +46,8 @@ class HomeController extends AbstractController
         if(isset($_POST["buscar"])){
             $inmuebles = null;
             $fotos = array();
+            $ciudad = "";
+            $tipo = 0;
             if(!$_POST["busqueda"]["ciudad"]){
                 echo "<div class='alert alert-danger' role='alert'>Debe introducir una ciudad o un codigo postal</div>";
                 return $this->redirectToRoute('home_index');
@@ -53,9 +55,13 @@ class HomeController extends AbstractController
                 echo "<div class='alert alert-danger' role='alert'>Debe seleccionar un tipo de busqueda</div>";
                 return $this->redirectToRoute('home_index');
             }else{
+
+                $ciudad = $_POST["busqueda"]["ciudad"];
+                $tipo = $_POST["busqueda"]["tipo"];
+
                 $inmuebles = $this->getDoctrine()
                 ->getRepository(Inmueble::class)
-                ->findBy(array('ciudad'=>$_POST["busqueda"]["ciudad"], 'tipoInmueble'=>$_POST["busqueda"]["tipo"]));
+                ->findBy(array('ciudad'=>$ciudad, 'tipoInmueble'=>$tipo));
 
                 foreach($inmuebles as $in){
                     $fotos[$in->getId()] = $this->getDoctrine()
@@ -67,7 +73,9 @@ class HomeController extends AbstractController
         }
         return $this->render('home/busqueda.html.twig', [
             'inmuebles' => $inmuebles,
-            'fotos' => $fotos
+            'fotos' => $fotos,
+            'ciudad' => $ciudad,
+            'tipo' => $tipo
         ]);
 
     }
