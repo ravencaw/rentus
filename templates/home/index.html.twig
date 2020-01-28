@@ -6,10 +6,10 @@
 
 
 <div class="home">
-    <form method="post" action="home/busqueda">
+    <form id="form_busqueda_home" method="post" action="home/busqueda">
             <div class="form-group" style="margin-top: 16px;">
-                <input class="form-control ciudad" placeholder="Ciudad/Codigo Postal..." type="text" name="busqueda[ciudad]" >
-                <select class="form-control" style="width: 25%;margin: 2%;margin-top: 0;" name="busqueda[tipo]">
+                <input class="form-control ciudad filter" placeholder="Ciudad/Codigo Postal..." type="text" name="busqueda[ciudad]" >
+                <select class="form-control tipo filter" style="width: 25%;margin: 2%;margin-top: 0;" name="busqueda[tipo]">
                         <option value="0" selected="">Seleccione una opcion...</option>
                         <option value="alquiler">Alquiler</option>
                         <option value="venta">Venta</option>
@@ -19,4 +19,8 @@
     </form>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/home/index.js') }}"></script>
 {% endblock %}
