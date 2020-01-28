@@ -63,7 +63,7 @@
                         {% if fotos[inmueble.id] %}
                             <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="..." style="max-width: 800px;">
                         {% else %}
-                            <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="...">
+                            <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="..."  style="max-width: 800px;">
                         {% endif %}
                     </div>
                     <div class="col-md-8">

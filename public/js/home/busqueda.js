@@ -70,7 +70,7 @@ function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, prec
             "<a href='resultado/" + element.id + "'>" +
             "<div class='row no-gutters'>" +
             "<div class='col-md-4'>" +
-            "<img src='../img/no_image.jpg' class='card-img'/>" +
+            "<img src='../img/no_image.jpg' class='card-img'  style='max-width: 800px;'/>" +
             "</div>" +
             "<div class='col-md-8'>" +
             "<div class='card-body'>" +
