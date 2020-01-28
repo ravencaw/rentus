@@ -11,7 +11,7 @@ cita_show:
   controller: App\Controller\CitaController::show
     
 cita_new:
-  path: /cita/new
+  path: /cita/new/{convocado}
   controller: App\Controller\CitaController::new
 
 cita_ajaxGetCitas:

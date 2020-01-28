@@ -8,20 +8,24 @@ use App\Entity\Inmueble;
 use App\Entity\Foto;
 use App\Entity\Favorito;
 use App\Entity\Alerta;
+use App\Entity\Mensaje;
 use App\Form\InmuebleType;
 use App\Form\FotoType;
 use App\Form\FavoritoType;
 use App\Form\AlertaType;
+use App\Form\MensajeType;
 use App\Repository\InmuebleRepository;
 use App\Repository\FotoRepository;
 use App\Repository\FavoritoRepository;
 use App\Repository\AlertaRepository;
+use App\Repository\MensajeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * @Route("/home")
@@ -106,6 +110,28 @@ class HomeController extends AbstractController
         ->getRepository(Favorito::class)
         ->findOneBy(array('id_inmueble'=>$id, 'id_usuario'=>$session->get("usuario_id")));
 
+        $mensaje = new Mensaje();
+        $form_contacto = $this->createForm(MensajeType::class, $mensaje);
+        $form_contacto->handleRequest($request);
+
+        if ($form_contacto->isSubmitted() && $form_contacto->isValid()) {
+           
+            $mensaje->setIdReceptor($inmueble->getIdCreador());
+
+            $fecha_hoy = new \DateTime();
+            $fecha_hoy->format('Y-m-d H:i:s');
+
+            $mensaje->setFecha($fecha_hoy);
+
+            $mensaje->setIdInmueble($id);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($mensaje);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home_resultado', array("id"=>$id));
+        }
+
         if(!$inmueble){
             return $this->redirectToRoute('home_index');
         }
@@ -114,7 +140,8 @@ class HomeController extends AbstractController
             'inmueble' => $inmueble,
             'fotos' => $fotos,
             'favorito' => $favorito,
-            'alerta' => $alerta
+            'alerta' => $alerta,
+            'form_contacto' => $form_contacto->createView()
         ]);
     }
 

@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Usuario;
+use App\Form\UsuarioType;
+use App\Repository\UsuarioRepository;
 use App\Entity\Mensaje;
+use App\Entity\Inmueble;
 use App\Form\MensajeType;
+use App\Form\InmuebleType;
 use App\Repository\MensajeRepository;
+use App\Repository\InmuebleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,64 +24,56 @@ class MensajeController extends AbstractController
     /**
      * @Route("/", name="mensaje_index", methods={"GET"})
      */
-    public function index(MensajeRepository $mensajeRepository): Response
+    public function index(MensajeRepository $mensajeRepository, Request $request): Response
     {
-        return $this->render('mensaje/index.html.twig', [
-            'mensajes' => $mensajeRepository->findAll(),
-        ]);
-    }
+        $session = $request->getSession();
 
-    /**
-     * @Route("/new", name="mensaje_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $mensaje = new Mensaje();
-        $form = $this->createForm(MensajeType::class, $mensaje);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($mensaje);
-            $entityManager->flush();
+            $mensajes=$mensajeRepository->findBy(array("idReceptor"=>$session->get("usuario_id")));
+            $inmuebles = array();
 
-            return $this->redirectToRoute('mensaje_index');
+            foreach($mensajes as $m){
+                $inmueble =  $this->getDoctrine()
+                ->getRepository(Inmueble::class)
+                ->findOneBy(array('id'=>$m->getIdInmueble()));
+                $inmuebles[$m->getId()]=$inmueble;
+            }
+
+            return $this->render('mensaje/index.html.twig', [
+                'mensajes' => $mensajes,
+                'inmuebles' => $inmuebles
+            ]);
+
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('mensaje/new.html.twig', [
-            'mensaje' => $mensaje,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
      * @Route("/{id}", name="mensaje_show", methods={"GET"})
      */
-    public function show(Mensaje $mensaje): Response
+    public function show(Mensaje $mensaje, Request $request): Response
     {
-        return $this->render('mensaje/show.html.twig', [
-            'mensaje' => $mensaje,
-        ]);
-    }
+        $session = $request->getSession();
 
-    /**
-     * @Route("/{id}/edit", name="mensaje_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Mensaje $mensaje): Response
-    {
-        $form = $this->createForm(MensajeType::class, $mensaje);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
+            $inmueble =  $this->getDoctrine()
+            ->getRepository(Inmueble::class)
+            ->findOneBy(array('id'=>$mensaje->getIdInmueble()));
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $usuario_existe = $this->getDoctrine()
+            ->getRepository(Usuario::class)
+            ->findOneBy(array("correo"=>$mensaje->getCorreo()));
 
-            return $this->redirectToRoute('mensaje_index');
+            return $this->render('mensaje/show.html.twig', [
+                'mensaje' => $mensaje,
+                'inmueble' => $inmueble,
+                'usuario_existe' => $usuario_existe
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('mensaje/edit.html.twig', [
-            'mensaje' => $mensaje,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -83,12 +81,20 @@ class MensajeController extends AbstractController
      */
     public function delete(Request $request, Mensaje $mensaje): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$mensaje->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($mensaje);
-            $entityManager->flush();
-        }
+        $session = $request->getSession();
 
-        return $this->redirectToRoute('mensaje_index');
+        if($session->get("usuario_id")){
+
+            if ($this->isCsrfTokenValid('delete'.$mensaje->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($mensaje);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('mensaje_index');
+
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 }

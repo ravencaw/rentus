@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Cita;
 use App\Form\CitaType;
 use App\Repository\CitaRepository;
+use App\Entity\Usuario;
+use App\Form\UsuarioType;
+use App\Repository\UsuarioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,9 +39,9 @@ class CitaController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="cita_new", methods={"GET","POST"})
+     * @Route("/new/{convocado}", name="cita_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(int $convocado, Request $request): Response
     {
         $session = $request->getSession();
 
@@ -60,8 +63,10 @@ class CitaController extends AbstractController
                     
                     $citum->setLatitud($latitud);
                     $citum->setLongitud($longitud);
+                    $citum->setIdUsuario1($session->get("usuario_id"));
+                    $citum->setIdUsuario2($convocado);
 
-                    $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+                    $citum->setCiudad(strtoupper($_POST["cita"]["ciudad"]));
 
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($citum);
@@ -91,8 +96,19 @@ class CitaController extends AbstractController
         $session = $request->getSession();
         
         if($session->get("usuario_id")){
+
+            $convocante = $this->getDoctrine()
+            ->getRepository(Usuario::class)
+            ->findOneBy(array("id"=>$citum->getIdUsuario1()));
+
+            $convocado = $this->getDoctrine()
+            ->getRepository(Usuario::class)
+            ->findOneBy(array("id"=>$citum->getIdUsuario2()));
+
             return $this->render('cita/show.html.twig', [
                 'citum' => $citum,
+                'convocante' => $convocante,
+                'convocado' => $convocado
             ]);
         }else{
             return $this->redirectToRoute('login');

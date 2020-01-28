@@ -85,6 +85,8 @@ class UsuarioController extends AbstractController
      */
     public function edit(Request $request, Usuario $usuario): Response
     {
+        $session = $request->getSession();
+
         if($session->get("usuario_id")){
             $form = $this->createForm(UsuarioType::class, $usuario);
             $form->handleRequest($request);
@@ -109,6 +111,7 @@ class UsuarioController extends AbstractController
      */
     public function delete(Request $request, Usuario $usuario): Response
     {
+        $session = $request->getSession();
         if($session->get("usuario_id")){
             if ($this->isCsrfTokenValid('delete'.$usuario->getId(), $request->request->get('_token'))) {
                 $entityManager = $this->getDoctrine()->getManager();

@@ -1,34 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Mensaje{% endblock %}
 
 {% block body %}
-    <h1>Mensaje</h1>
+    <a href="{{ path('mensaje_index') }}"><i class="fa fa-arrow-left"></i></a><br>
+    <h1>Mensaje {{ mensaje.id }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ mensaje.id }}</td>
+                <th>Correo</th>
+                <td>{{ mensaje.correo }} {% if usuario_existe %}<a class="btn btn-light" href="{{ path('cita_new', {'convocado': usuario_existe.id}) }}" ><i class="fa fa-calendar"></i> Crear cita</a>{% endif %}</td>
             </tr>
             <tr>
-                <th>IdChat</th>
-                <td>{{ mensaje.idChat }}</td>
+                <th>Telefono</th>
+                <td>{{ mensaje.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Asunto</th>
+                <td>{{ mensaje.asunto }}</td>
+            </tr>
+            <tr>
+                <th>Inmueble</th>
+                <td>
+                    {{ inmueble.direccion }}
+                    <br>    
+                    {{ inmueble.ciudad }}
+                    <br>    
+                    {{ inmueble.zona }}
+                </td>
             </tr>
             <tr>
                 <th>Fecha</th>
                 <td>{{ mensaje.fecha ? mensaje.fecha|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Texto</th>
+                <th>Mensaje</th>
                 <td>{{ mensaje.texto }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('mensaje_index') }}">back to list</a>
-
-    <a href="{{ path('mensaje_edit', {'id': mensaje.id}) }}">edit</a>
+    
 
     {{ include('mensaje/_delete_form.html.twig') }}
 {% endblock %}

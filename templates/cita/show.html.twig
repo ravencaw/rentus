@@ -3,6 +3,7 @@
 {% block title %}Cita{% endblock %}
 
 {% block body %}
+<a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}"><i class="fa fa-arrow-left"></i></a>
     <h1>Cita</h1>
 
     <table class="table">
@@ -16,12 +17,12 @@
                 <td>{{ citum.fechaHora ? citum.fechaHora|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Id_usuario1</th>
-                <td>{{ citum.idUsuario1 }}</td>
+                <th>Convocante</th>
+                <td>{{ convocante.nombre }}</td>
             </tr>
             <tr>
-                <th>Id_usuario2</th>
-                <td>{{ citum.idUsuario2 }}</td>
+                <th>Convocado</th>
+                <td>{{ convocado.nombre }}</td>
             </tr>
             <tr>
                 <th>Direccion</th>
@@ -38,7 +39,7 @@
     <hr>
     <div id="map" class="col-md-12"></div>
 
-    <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Volver al calendario</a>
+    
     {% if app.session.get('usuario_inmobiliaria') %}
         <a href="{{ path('cita_edit', {'id': citum.id}) }}">Editar cita</a>
 

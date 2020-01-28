@@ -1,39 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
-{% block title %}Mensaje index{% endblock %}
+{% block title %}Mis mensajes{% endblock %}
 
 {% block body %}
-    <h1>Mensaje index</h1>
+    <h1>Mis mensajes</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>IdChat</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Asunto</th>
+                <th>Inmueble</th>
                 <th>Fecha</th>
                 <th>Texto</th>
-                <th>actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for mensaje in mensajes %}
             <tr>
-                <td>{{ mensaje.id }}</td>
-                <td>{{ mensaje.idChat }}</td>
+                <td>{{ mensaje.correo }}</td>
+                <td>{{ mensaje.telefono }}</td>
+                <td>{{ mensaje.asunto }}</td>
+                <td>
+                    {{ inmuebles[mensaje.id].direccion }}
+                    <br>    
+                    {{ inmuebles[mensaje.id].ciudad }}
+                    <br>    
+                    {{ inmuebles[mensaje.id].zona }}
+                </td>
                 <td>{{ mensaje.fecha ? mensaje.fecha|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ mensaje.texto }}</td>
                 <td>
-                    <a href="{{ path('mensaje_show', {'id': mensaje.id}) }}">show</a>
-                    <a href="{{ path('mensaje_edit', {'id': mensaje.id}) }}">edit</a>
+                    <a href="{{ path('mensaje_show', {'id': mensaje.id}) }}">Mostrar</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('mensaje_new') }}">Create new</a>
 {% endblock %}

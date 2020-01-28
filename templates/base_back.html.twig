@@ -50,6 +50,7 @@
                         <li> <a href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Mis inmuebles <i class="fa fa-building"></i></a></li>
                         <li> <a href="{{ path('cita_index', {id: app.session.get('usuario_id')}) }}">Mis citas <i class="fa fa-calendar"></i></a></li>
                         <li> <a href="{{ path('favorito_index', {idUsuario: app.session.get('usuario_id')}) }}">Mis favoritos <i class="fa fa-heart"></i></a></li>
+                        <li> <a href="{{ path('mensaje_index') }}">Mis mensajes <i class="fa fa-inbox"></i></a></li>
                     </ul>
                 </div>
             </div>

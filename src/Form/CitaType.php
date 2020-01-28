@@ -17,8 +17,6 @@ class CitaType extends AbstractType
                 'attr'=>['class'=>'datepicker'],
                 'label'=>'Fecha de la cita'
             ])
-            ->add('id_usuario1', null, array('label'=>'Convocante'))
-            ->add('id_usuario2', null, array('label'=>'Convocado'))
             ->add('direccion')
             ->add('ciudad')
         ;

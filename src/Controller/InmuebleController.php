@@ -81,7 +81,7 @@ class InmuebleController extends AbstractController
     /**
      * @Route("show/{id}", name="inmueble_show", methods={"GET"})
      */
-    public function show(int $id, InmuebleRepository $inmuebleRepository): Response
+    public function show(int $id, InmuebleRepository $inmuebleRepository, Request $request): Response
     {
         $session = $request->getSession();
 
