@@ -52,6 +52,8 @@ class InmuebleController extends AbstractController
             $inmueble->setLatitud($latitud);
             $inmueble->setLongitud($longitud);
 
+            $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+
             $inmueble->setIdCreador($session->get("usuario_id"));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($inmueble);
@@ -102,6 +104,8 @@ class InmuebleController extends AbstractController
                 
             $inmueble->setLatitud($latitud);
             $inmueble->setLongitud($longitud);
+
+            $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
 
             $this->getDoctrine()->getManager()->flush();
             

@@ -129,7 +129,7 @@ class HomeController extends AbstractController
         $array_filtros["tipo"] = $_POST["tipo"];
 
         if($_POST["ciudad"]){
-            $array_filtros["ciudad"] = $_POST["ciudad"];
+            $array_filtros["ciudad"] = strtoupper($_POST["ciudad"]);
         }
 
         if($_POST["precio_min"]){

@@ -50,6 +50,8 @@ class CitaController extends AbstractController
             $citum->setLatitud($latitud);
             $citum->setLongitud($longitud);
 
+            $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($citum);
             $entityManager->flush();
@@ -94,6 +96,9 @@ class CitaController extends AbstractController
             
             $citum->setLatitud($latitud);
             $citum->setLongitud($longitud);
+
+            $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('cita_show', array("id"=>$id));
