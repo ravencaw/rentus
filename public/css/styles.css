@@ -71,8 +71,8 @@
   /*Home CSS*/
 
   .home {
-    background: #f1f7fc;
-    padding: 80px 0;
+    background-image: url("../img/fondo.jpg");
+    padding: 300px 0;
   }
   
   .home form {
