@@ -16,7 +16,7 @@
 
  <div class="busqueda col-md-12">
  {% if inmuebles %}
-    <div id="wrapper" class="container" style="margin: 0px; margin-bottom:20%;color: rgb(0,0,0);background-color: rgba(39,104,104,0);">
+    <div id="wrapper" class="container col-md-12" style="margin: 0px; margin-bottom:20%;color: rgb(0,0,0);background-color: white;">
             <div id="#sidebar-wrapper" class="col-md-2" style="color: rgb(0,0,0);padding: 0px;background-color: rgba(39,104,104,0);">
                 <div id="sidebar-wrapper" style="background-color: rgb(39,104,104);color: rgb(0,0,0);text-align:left;">
                     <form method="post" id="filtro_form">
@@ -54,14 +54,14 @@
                  </div>
              </div>
 {% endif %}
-    <div class="resultados">   
+    <div class="resultados col-md-8">   
 {% for inmueble in inmuebles %}
         <div class="card mb-3 col-md-12">
             <a href="resultado/{{ inmueble.id }}">
                 <div class="row no-gutters">
                     <div class="col-md-4">
                         {% if fotos[inmueble.id] %}
-                            <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="...">
+                            <img src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ fotos[inmueble.id].ruta}}" class="card-img" alt="..." style="max-width: 800px;">
                         {% else %}
                             <img src="{{ asset('img/no_image.jpg')  }}" class="card-img" alt="...">
                         {% endif %}
@@ -82,6 +82,9 @@
     <span align="center">No se han encontrado registros</span>
 {% endfor %}
     </div>
+    </div>
+    <div class="publicidad col-md-2">
+        <img src="../img/symfony_logo.png"
     </div>
 </div>
 {% endblock %}
