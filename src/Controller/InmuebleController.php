@@ -86,6 +86,10 @@ class InmuebleController extends AbstractController
         $form = $this->createForm(InmuebleType::class, $inmueble);
         $form->handleRequest($request);
 
+        $fotos = $this->getDoctrine()
+        ->getRepository(Foto::class)
+        ->findBy(array('idInmueble'=>$inmueble->getId()));
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $direccion = $_POST["inmueble"]["direccion"].", ".$_POST["inmueble"]["ciudad"]." ".$_POST["inmueble"]["cp"];
@@ -102,7 +106,31 @@ class InmuebleController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             
             if(sizeof($_FILES)>0){
+                $directorio = "../public/img/inmuebles/".$inmueble->getId();
 
+                if (!file_exists($directorio)) {
+                    mkdir($directorio, 0777, true);
+                }
+
+                foreach($_FILES as $f){
+                    if(strlen($f["name"])>0){
+                        if($f["type"]=="image/jpeg"){
+                            $tmp_name = $f["tmp_name"];
+                            $nombre = $f["name"];
+
+                            move_uploaded_file($tmp_name, "$directorio/$nombre");
+
+                            $foto = new Foto();
+
+                            $foto->setIdInmueble($inmueble->getId());
+                            $foto->setRuta($nombre);
+
+                            $entityManager = $this->getDoctrine()->getManager();
+                            $entityManager->persist($foto);
+                            $entityManager->flush();
+                        }
+                    }
+                }
             }
             
             return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
@@ -111,6 +139,7 @@ class InmuebleController extends AbstractController
         return $this->render('inmueble/edit.html.twig', [
             'inmueble' => $inmueble,
             'form' => $form->createView(),
+            'fotos'=> $fotos
         ]);
     }
 

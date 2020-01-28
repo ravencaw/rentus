@@ -29,14 +29,14 @@ class InmuebleRepository extends ServiceEntityRepository
         ->where('i.tipoInmueble = :tipo')
         ->setParameter('tipo', $array_filtros["tipo"])
         ;
-        
+        if(isset($array_filtros["ciudad"])){
+            $qb -> andWhere('i.ciudad = :ciudad')
+            ->setParameter('ciudad', $array_filtros["ciudad"]);
+        }
+
         if(isset($array_filtros["precio_min"])){
             $qb -> andWhere('i.precio > :precio_min')
             ->setParameter('precio_min', $array_filtros["precio_min"]);
-        }
-        if(isset($array_filtros["precio_max"])){
-            $qb -> andWhere('i.precio < :precio_max')
-            ->setParameter('precio_max', $array_filtros["precio_max"]);
         }
 
         if(isset($array_filtros["superficie"])){

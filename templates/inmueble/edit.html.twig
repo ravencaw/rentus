@@ -4,8 +4,18 @@
 
 {% block body %}
     <h1>Editar inmueble</h1>
-
+    
     {{ include('inmueble/_form_edit.html.twig', {'button_label': 'Guardar'}) }}
+
+    <h1>Galeria de imagenes</h1>
+    <hr>
+        <div id="imagenes" class="col-md-12" style="display:inline-block;">
+            {% for f in fotos %}
+                    <img class="col-md-4" src="{{ asset('img/inmuebles/')  }}{{ inmueble.id }}/{{ f.ruta}}">
+            {% else %}
+                <span>No se han encontrado fotos</span>
+            {% endfor %}
+        </div>
 
     <a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Volver</a>
 
@@ -15,5 +25,6 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('js/galeria/jquery.flex-images.min.js') }}"></script>
     <script src="{{ asset('js/inmueble/edit.js') }}"></script>
 {% endblock %}

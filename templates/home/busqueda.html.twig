@@ -3,6 +3,15 @@
 {% block title %}Busqueda{% endblock %}
 
 {% block body %}
+<div class="ciudad col-md-12 form-inline" style="padding:30px; background-color:white;">
+    <div class="col-md-1"></div>
+    <input type="text" class="form-control filter col-md-6" placeholder="Ciudad..." id="ciudad"/>
+    <div class="col-md-1"></div>
+    <select id="tipo" class="form-control filter col-md-3">
+        <option value="venta">Venta</option>
+        <option value="alquiler">Alquiler</option>
+    </select>
+</div>
 
  <div class="busqueda col-md-12">
  {% if inmuebles %}
@@ -12,21 +21,10 @@
                     <form method="post" id="filtro_form">
                     <ul class="sidebar-nav">
                         <li>
-                            Tipo
-                            <select id="tipo" class="form-control filter">
-                                <option value="venta">Venta</option>
-                                <option value="alquiler">Alquiler</option>
-                            </select> 
-                        </li>
-                        <li>
                             Precio<br>
                             <input type="number" class="form-control col-md-12 filter" id="precio_min" placeholder="Precio mínimo">
                             <input type="number" class="form-control col-md-12 filter" id="precio_max"  style="margin-top:10px;" placeholder="Precio máximo">
                          </li>
-                        <li>
-                            Precio/m<sup>2</sup> 
-                            <input type="number" class="form-control col-md-12 filter" id="precio_metro_cuadrado">
-                        </li>
                         <li>
                             Superficie 
                             <input type="number" class="form-control col-md-12 filter" id="superficie">
