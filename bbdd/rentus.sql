@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-01-2020 a las 13:27:31
+-- Tiempo de generación: 28-01-2020 a las 21:01:47
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -42,21 +42,7 @@ CREATE TABLE `alerta` (
 --
 
 INSERT INTO `alerta` (`id`, `id_inmueble`, `id_usuario`) VALUES
-(3, 5, 34);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `chat`
---
-
-DROP TABLE IF EXISTS `chat`;
-CREATE TABLE `chat` (
-  `id` int(11) NOT NULL,
-  `id_usuario1` int(11) NOT NULL,
-  `id_usuario2` int(11) NOT NULL,
-  `asunto` varchar(300) COLLATE utf8_spanish2_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+(4, 5, 34);
 
 -- --------------------------------------------------------
 
@@ -83,7 +69,8 @@ CREATE TABLE `cita` (
 INSERT INTO `cita` (`id`, `fecha_hora`, `id_usuario1`, `id_usuario2`, `direccion`, `ciudad`, `longitud`, `latitud`) VALUES
 (1, '2020-02-04 19:00:00', 34, 1, 'Calle Galera 17', 'Sevilla', '-5.999035', '37.3880055'),
 (2, '2020-01-18 20:15:00', 2, 1, 'Plaza Nueva 7', 'Granada', '', ''),
-(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'Sevilla', '-5.985995', '37.3901403');
+(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'Sevilla', '-5.985995', '37.3901403'),
+(5, '2020-01-29 16:30:00', 34, 1, 'Coso Viejo', 'ANTEQUERA', '-4.5579117', '37.0169032');
 
 -- --------------------------------------------------------
 
@@ -104,7 +91,7 @@ CREATE TABLE `favorito` (
 
 INSERT INTO `favorito` (`id`, `id_usuario`, `id_inmueble`) VALUES
 (4, 34, 1),
-(5, 34, 2);
+(7, 34, 2);
 
 -- --------------------------------------------------------
 
@@ -130,7 +117,8 @@ INSERT INTO `foto` (`id`, `id_inmueble`, `ruta`) VALUES
 (4, 2, 'maxresdefault3.jpg'),
 (6, 5, 'apartamento-samy-e-ricky-lapa360-01.jpg'),
 (7, 5, 'imagem31-4.jpg'),
-(8, 5, 'skyline.jpg');
+(8, 5, 'skyline.jpg'),
+(9, 1, 'skyline.jpg');
 
 -- --------------------------------------------------------
 
@@ -190,8 +178,8 @@ CREATE TABLE `inmueble` (
 INSERT INTO `inmueble` (`id`, `tipo_inmueble`, `precio`, `superficie`, `direccion`, `zona`, `ciudad`, `cp`, `longitud`, `latitud`, `habitaciones`, `bathroom`, `comentarios`, `extras`, `id_creador`, `disponible`) VALUES
 (1, 'venta', 260000, 150, 'Calle Encarnacion nº9', 'centro', 'ANTEQUERA', 29202, '-4.5579117', '37.0169032', 3, 2, 'Piso en pleno centro de Antequera', 'Terraza, calefaccion, aire acondicionado', 34, 1),
 (2, 'venta', 160000, 100, 'Calle Toril nº12 2ºA', 'centro', 'ANTEQUERA', 29200, '', '', 2, 1, 'Piso en la calle Toril', 'Calefaccion, bañera', 2, 0),
-(3, 'alquiler', 420, 90, 'Calle Galera 17', 'centro', 'ANTEQUERA', 41001, '-5.999035', '37.3880055', 2, 2, 'Piso en pleno centro de Sevilla', '1 sala de estar\r\n1 salon\r\n1 cocina\r\nAmueblado', 34, 1),
-(5, 'venta', 350000, 100, 'Calle Trasierras 5', 'centro', 'SEVILLA', 29200, '-4.5574382', '37.0198236', 3, 1, 'Piso amueblado en pleno centro de Antequera', 'Amueblado\r\nTerraza', 34, 1);
+(3, 'alquiler', 420, 90, 'Calle Galera 17', 'centro', 'SEVILLA', 41001, '-5.999035', '37.3880055', 2, 2, 'Piso en pleno centro de Sevilla', '1 sala de estar\r\n1 salon\r\n1 cocina\r\nAmueblado', 34, 1),
+(5, 'venta', 350000, 100, 'Calle Trasierras 5', 'centro', 'ANTEQUERA', 29200, '-4.5574382', '37.0198236', 3, 1, 'Piso amueblado en pleno centro de Antequera', 'Amueblado\r\nTerraza', 34, 1);
 
 -- --------------------------------------------------------
 
@@ -202,10 +190,25 @@ INSERT INTO `inmueble` (`id`, `tipo_inmueble`, `precio`, `superficie`, `direccio
 DROP TABLE IF EXISTS `mensaje`;
 CREATE TABLE `mensaje` (
   `id` int(11) NOT NULL,
-  `id_chat` int(11) NOT NULL,
+  `id_receptor` int(11) NOT NULL,
+  `id_inmueble` int(11) NOT NULL,
+  `correo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
+  `telefono` int(11) NOT NULL,
+  `asunto` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
   `fecha` datetime NOT NULL,
   `texto` text COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `mensaje`
+--
+
+INSERT INTO `mensaje` (`id`, `id_receptor`, `id_inmueble`, `correo`, `telefono`, `asunto`, `fecha`, `texto`) VALUES
+(1, 34, 1, 'pabloz@mail.com', 667786786, 'Concertar visita', '2020-01-28 18:12:07', 'dfsdfdfsdf'),
+(2, 34, 1, 'pedroperez@mail.com', 654789821, 'Concertar visita', '2020-01-28 18:13:07', 'Quisiera concertar una cita para ver el inmueble'),
+(3, 34, 1, 'mepicaunpie@mail.com', 675893290, 'Concertar visita', '2020-01-28 18:17:16', 'Quiero concertar una cita'),
+(4, 2, 2, 'mepicaunpie@mail.com', 654789821, 'Concertar visita', '2020-01-28 18:36:29', 'Quisiera concertar una cita'),
+(5, 34, 1, 'pepe@mail.com', 685903102, 'Concertar visita', '2020-01-28 19:43:44', 'Quiero concertar una cita');
 
 -- --------------------------------------------------------
 
@@ -243,12 +246,6 @@ INSERT INTO `usuario` (`id`, `nombre`, `correo`, `telefono`, `password`, `id_inm
 -- Indices de la tabla `alerta`
 --
 ALTER TABLE `alerta`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `chat`
---
-ALTER TABLE `chat`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -301,31 +298,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `alerta`
 --
 ALTER TABLE `alerta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `chat`
---
-ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `cita`
 --
 ALTER TABLE `cita`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `favorito`
 --
 ALTER TABLE `favorito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `foto`
 --
 ALTER TABLE `foto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `inmobiliaria`
@@ -337,6 +328,12 @@ ALTER TABLE `inmobiliaria`
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `mensaje`
+--
+ALTER TABLE `mensaje`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
