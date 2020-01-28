@@ -21,11 +21,17 @@ class InmuebleController extends AbstractController
     /**
      * @Route("/index/{id}", name="inmueble_index", methods={"GET"})
      */
-    public function index(int $id, InmuebleRepository $inmuebleRepository): Response
+    public function index(int $id, InmuebleRepository $inmuebleRepository, Request $request): Response
     {
-        return $this->render('inmueble/index.html.twig', [
-            'inmuebles' => $inmuebleRepository->findBy(array("idCreador"=>$id)),
-        ]);
+        $session = $request->getSession();
+
+        if($session->get("usuario_id")){
+            return $this->render('inmueble/index.html.twig', [
+                'inmuebles' => $inmuebleRepository->findBy(array("idCreador"=>$id)),
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -35,37 +41,41 @@ class InmuebleController extends AbstractController
     {
         $session = $request->getSession();
 
-        $inmueble = new Inmueble();
-        $form = $this->createForm(InmuebleType::class, $inmueble);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
+            $inmueble = new Inmueble();
+            $form = $this->createForm(InmuebleType::class, $inmueble);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $direccion = $_POST["inmueble"]["direccion"].", ".$_POST["inmueble"]["ciudad"]." ".$_POST["inmueble"]["cp"];
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
-            $geo = json_decode($geo, true);
+                $direccion = $_POST["inmueble"]["direccion"].", ".$_POST["inmueble"]["ciudad"]." ".$_POST["inmueble"]["cp"];
+                $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+                $geo = json_decode($geo, true);
 
 
-            $latitud = $geo['results'][0]['geometry']['location']['lat'];
-            $longitud = $geo['results'][0]['geometry']['location']['lng'];
-            
-            $inmueble->setLatitud($latitud);
-            $inmueble->setLongitud($longitud);
+                $latitud = $geo['results'][0]['geometry']['location']['lat'];
+                $longitud = $geo['results'][0]['geometry']['location']['lng'];
+                
+                $inmueble->setLatitud($latitud);
+                $inmueble->setLongitud($longitud);
 
-            $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+                $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
 
-            $inmueble->setIdCreador($session->get("usuario_id"));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($inmueble);
-            $entityManager->flush();
+                $inmueble->setIdCreador($session->get("usuario_id"));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($inmueble);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
+                return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
+            }
+
+            return $this->render('inmueble/new.html.twig', [
+                'inmueble' => $inmueble,
+                'form' => $form->createView(),
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('inmueble/new.html.twig', [
-            'inmueble' => $inmueble,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -73,9 +83,15 @@ class InmuebleController extends AbstractController
      */
     public function show(int $id, InmuebleRepository $inmuebleRepository): Response
     {
-        return $this->render('inmueble/show.html.twig', [
-            'inmueble' => $inmuebleRepository->find($id),
-        ]);
+        $session = $request->getSession();
+
+        if($session->get("usuario_id")){
+            return $this->render('inmueble/show.html.twig', [
+                'inmueble' => $inmuebleRepository->find($id),
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -85,66 +101,71 @@ class InmuebleController extends AbstractController
     {
         $session = $request->getSession();
 
-        $form = $this->createForm(InmuebleType::class, $inmueble);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
+            $form = $this->createForm(InmuebleType::class, $inmueble);
+            $form->handleRequest($request);
 
-        $fotos = $this->getDoctrine()
-        ->getRepository(Foto::class)
-        ->findBy(array('idInmueble'=>$inmueble->getId()));
+            $fotos = $this->getDoctrine()
+            ->getRepository(Foto::class)
+            ->findBy(array('idInmueble'=>$inmueble->getId()));
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $direccion = $_POST["inmueble"]["direccion"].", ".$_POST["inmueble"]["ciudad"]." ".$_POST["inmueble"]["cp"];
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
-            $geo = json_decode($geo, true);
+                $direccion = $_POST["inmueble"]["direccion"].", ".$_POST["inmueble"]["ciudad"]." ".$_POST["inmueble"]["cp"];
+                $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+                $geo = json_decode($geo, true);
 
 
-            $latitud = $geo['results'][0]['geometry']['location']['lat'];
-            $longitud = $geo['results'][0]['geometry']['location']['lng'];
+                $latitud = $geo['results'][0]['geometry']['location']['lat'];
+                $longitud = $geo['results'][0]['geometry']['location']['lng'];
+                    
+                $inmueble->setLatitud($latitud);
+                $inmueble->setLongitud($longitud);
+
+                $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+
+                $this->getDoctrine()->getManager()->flush();
                 
-            $inmueble->setLatitud($latitud);
-            $inmueble->setLongitud($longitud);
+                if(sizeof($_FILES)>0){
+                    $directorio = "../public/img/inmuebles/".$inmueble->getId();
 
-            $inmueble->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+                    if (!file_exists($directorio)) {
+                        mkdir($directorio, 0777, true);
+                    }
 
-            $this->getDoctrine()->getManager()->flush();
-            
-            if(sizeof($_FILES)>0){
-                $directorio = "../public/img/inmuebles/".$inmueble->getId();
+                    foreach($_FILES as $f){
+                        if(strlen($f["name"])>0){
+                            if($f["type"]=="image/jpeg"){
+                                $tmp_name = $f["tmp_name"];
+                                $nombre = $f["name"];
 
-                if (!file_exists($directorio)) {
-                    mkdir($directorio, 0777, true);
-                }
+                                move_uploaded_file($tmp_name, "$directorio/$nombre");
 
-                foreach($_FILES as $f){
-                    if(strlen($f["name"])>0){
-                        if($f["type"]=="image/jpeg"){
-                            $tmp_name = $f["tmp_name"];
-                            $nombre = $f["name"];
+                                $foto = new Foto();
 
-                            move_uploaded_file($tmp_name, "$directorio/$nombre");
+                                $foto->setIdInmueble($inmueble->getId());
+                                $foto->setRuta($nombre);
 
-                            $foto = new Foto();
-
-                            $foto->setIdInmueble($inmueble->getId());
-                            $foto->setRuta($nombre);
-
-                            $entityManager = $this->getDoctrine()->getManager();
-                            $entityManager->persist($foto);
-                            $entityManager->flush();
+                                $entityManager = $this->getDoctrine()->getManager();
+                                $entityManager->persist($foto);
+                                $entityManager->flush();
+                            }
                         }
                     }
                 }
+                
+                return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
             }
-            
-            return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
-        }
 
-        return $this->render('inmueble/edit.html.twig', [
-            'inmueble' => $inmueble,
-            'form' => $form->createView(),
-            'fotos'=> $fotos
-        ]);
+            return $this->render('inmueble/edit.html.twig', [
+                'inmueble' => $inmueble,
+                'form' => $form->createView(),
+                'fotos'=> $fotos
+            ]);
+
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -153,13 +174,18 @@ class InmuebleController extends AbstractController
     public function delete(Request $request, Inmueble $inmueble): Response
     {
         $session = $request->getSession();
-        if ($this->isCsrfTokenValid('delete'.$inmueble->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($inmueble);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
+        if($session->get("usuario_id")){
+            if ($this->isCsrfTokenValid('delete'.$inmueble->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($inmueble);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('inmueble_index',array("id"=>$session->get("usuario_id")));
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     

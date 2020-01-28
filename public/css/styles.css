@@ -252,6 +252,11 @@
     text-decoration: none !important;
   }
 
+  .publicidad{
+    height: 90%;
+    background-color: black;
+  }
+
   /*Resultado CSS*/
 
   #map {

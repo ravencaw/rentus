@@ -24,29 +24,37 @@ class AlertaController extends AbstractController
     /**
      * @Route("/index/{idUsuario}", name="alerta_index", methods={"GET"})
      */
-    public function index($idUsuario, AlertaRepository $alertaRepository): Response
+    public function index($idUsuario, AlertaRepository $alertaRepository, Request $request): Response
     {
-        $alertas = $alertaRepository->findBy(array("id_usuario"=>$idUsuario));
-        $inmuebles = array();
-        $fotos = array();
+        $session = $request->getSession();
 
-        foreach($alertas as $a){
-            $inmuebles[$a->getId()] =  $this->getDoctrine()
-            ->getRepository(Inmueble::class)
-            ->find($a->getIdInmueble()); 
+        if($session->get("usuario_id")){
+        
+            $alertas = $alertaRepository->findBy(array("id_usuario"=>$idUsuario));
+            $inmuebles = array();
+            $fotos = array();
 
-            foreach($inmuebles as $in){
-                $fotos[$in->getId()] = $this->getDoctrine()
-                ->getRepository(Foto::class)
-                ->findOneBy(array('idInmueble'=>$in->getId()));
+            foreach($alertas as $a){
+                $inmuebles[$a->getId()] =  $this->getDoctrine()
+                ->getRepository(Inmueble::class)
+                ->find($a->getIdInmueble()); 
+
+                foreach($inmuebles as $in){
+                    $fotos[$in->getId()] = $this->getDoctrine()
+                    ->getRepository(Foto::class)
+                    ->findOneBy(array('idInmueble'=>$in->getId()));
+                }
             }
-        }
 
-        return $this->render('alerta/index.html.twig', [
-            'alertas' => $alertas,
-            'inmuebles' => $inmuebles,
-            'fotos' => $fotos
-        ]);
+            return $this->render('alerta/index.html.twig', [
+                'alertas' => $alertas,
+                'inmuebles' => $inmuebles,
+                'fotos' => $fotos
+            ]);
+            
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -55,48 +63,22 @@ class AlertaController extends AbstractController
     public function new($idInmueble, Request $request): Response
     {
         $session = $request->getSession();
+        if($session->get("usuario_id")){
+            $alertum = new Alerta();
 
-        $alertum = new Alerta();
+            $alertum->setIdUsuario($session->get("usuario_id"));
+            $alertum->setIdInmueble($idInmueble);
 
-        $alertum->setIdUsuario($session->get("usuario_id"));
-        $alertum->setIdInmueble($idInmueble);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($alertum);
+            $entityManager->flush();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($alertum);
-        $entityManager->flush();
+            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
 
-        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
-       
-    }
-
-    /**
-     * @Route("/{id}", name="alerta_show", methods={"GET"})
-     */
-    public function show(Alerta $alertum): Response
-    {
-        return $this->render('alerta/show.html.twig', [
-            'alertum' => $alertum,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="alerta_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Alerta $alertum): Response
-    {
-        $form = $this->createForm(AlertaType::class, $alertum);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('alerta_index');
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('alerta/edit.html.twig', [
-            'alertum' => $alertum,
-            'form' => $form->createView(),
-        ]);
+       
     }
 
     /**
@@ -105,15 +87,18 @@ class AlertaController extends AbstractController
     public function delete($id, $idInmueble, Request $request): Response
     {
         $session = $request->getSession();
+        if($session->get("usuario_id")){
+            $alertum=$this->getDoctrine()
+            ->getRepository(Alerta::class)
+            ->find($id);
 
-        $alertum=$this->getDoctrine()
-        ->getRepository(Alerta::class)
-        ->find($id);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($alertum);
+            $entityManager->flush();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($alertum);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 }

@@ -24,29 +24,35 @@ class FavoritoController extends AbstractController
     /**
      * @Route("/index/{idUsuario}", name="favorito_index", methods={"GET"})
      */
-    public function index($idUsuario, FavoritoRepository $favoritoRepository): Response
+    public function index($idUsuario, FavoritoRepository $favoritoRepository, Request $request): Response
     {
-        $favoritos = $favoritoRepository->findBy(array("id_usuario"=>$idUsuario));
-        $inmuebles = array();
-        $fotos = array();
+        $session = $request->getSession();
 
-        foreach($favoritos as $f){
-            $inmuebles[$f->getId()] =  $this->getDoctrine()
-            ->getRepository(Inmueble::class)
-            ->find($f->getIdInmueble()); 
+        if($session->get("usuario_id")){
+            $favoritos = $favoritoRepository->findBy(array("id_usuario"=>$idUsuario));
+            $inmuebles = array();
+            $fotos = array();
 
-            foreach($inmuebles as $in){
-                $fotos[$in->getId()] = $this->getDoctrine()
-                ->getRepository(Foto::class)
-                ->findOneBy(array('idInmueble'=>$in->getId()));
+            foreach($favoritos as $f){
+                $inmuebles[$f->getId()] =  $this->getDoctrine()
+                ->getRepository(Inmueble::class)
+                ->find($f->getIdInmueble()); 
+
+                foreach($inmuebles as $in){
+                    $fotos[$in->getId()] = $this->getDoctrine()
+                    ->getRepository(Foto::class)
+                    ->findOneBy(array('idInmueble'=>$in->getId()));
+                }
             }
-        }
 
-        return $this->render('favorito/index.html.twig', [
-            'favoritos' => $favoritos,
-            'inmuebles' => $inmuebles,
-            'fotos' => $fotos
-        ]);
+            return $this->render('favorito/index.html.twig', [
+                'favoritos' => $favoritos,
+                'inmuebles' => $inmuebles,
+                'fotos' => $fotos
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -56,47 +62,22 @@ class FavoritoController extends AbstractController
     {
         $session = $request->getSession();
 
-        $favorito = new Favorito();
+        if($session->get("usuario_id")){
 
-        $favorito->setIdUsuario($session->get("usuario_id"));
-        $favorito->setIdInmueble($idInmueble);
+            $favorito = new Favorito();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($favorito);
-        $entityManager->flush();
+            $favorito->setIdUsuario($session->get("usuario_id"));
+            $favorito->setIdInmueble($idInmueble);
 
-        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($favorito);
+            $entityManager->flush();
 
-    }
+            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
 
-    /**
-     * @Route("/{id}", name="favorito_show", methods={"GET"})
-     */
-    public function show(Favorito $favorito): Response
-    {
-        return $this->render('favorito/show.html.twig', [
-            'favorito' => $favorito,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="favorito_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Favorito $favorito): Response
-    {
-        $form = $this->createForm(FavoritoType::class, $favorito);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('favorito_index');
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('favorito/edit.html.twig', [
-            'favorito' => $favorito,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -104,14 +85,20 @@ class FavoritoController extends AbstractController
      */
     public function delete($id, $idInmueble, Request $request): Response
     {
-        $favorito = $this->getDoctrine()
-        ->getRepository(Favorito::class)
-        ->find($id); 
-        
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($favorito);
-        $entityManager->flush();
+        $session = $request->getSession();
 
-        return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+        if($session->get("usuario_id")){
+            $favorito = $this->getDoctrine()
+            ->getRepository(Favorito::class)
+            ->find($id); 
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($favorito);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home_resultado',array("id"=>$idInmueble));
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 }

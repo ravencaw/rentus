@@ -19,12 +19,20 @@ class CitaController extends AbstractController
     /**
      * @Route("/index/{id}", name="cita_index", methods={"GET"})
      */
-    public function index($id, CitaRepository $citaRepository): Response
-    {
-        return $this->render('cita/index.html.twig', [
-            'id_usuario' => $id,
 
-        ]);
+    
+    public function index($id, CitaRepository $citaRepository, Request $request): Response
+    {
+        $session = $request->getSession();
+
+        if($session->get("usuario_id")){
+            return $this->render('cita/index.html.twig', [
+                'id_usuario' => $id,
+
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -34,45 +42,61 @@ class CitaController extends AbstractController
     {
         $session = $request->getSession();
 
-        $citum = new Cita();
-        $form = $this->createForm(CitaType::class, $citum);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
+            if($session->get("usuario_inmobiliaria")){
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
-            $geo = json_decode($geo, true);
+                $citum = new Cita();
+                $form = $this->createForm(CitaType::class, $citum);
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
+                    $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+                    $geo = json_decode($geo, true);
 
 
-            $latitud = $geo['results'][0]['geometry']['location']['lat'];
-            $longitud = $geo['results'][0]['geometry']['location']['lng'];
-            
-            $citum->setLatitud($latitud);
-            $citum->setLongitud($longitud);
+                    $latitud = $geo['results'][0]['geometry']['location']['lat'];
+                    $longitud = $geo['results'][0]['geometry']['location']['lng'];
+                    
+                    $citum->setLatitud($latitud);
+                    $citum->setLongitud($longitud);
 
-            $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+                    $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($citum);
-            $entityManager->flush();
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($citum);
+                    $entityManager->flush();
 
-            return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+                    return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+                
+                }
+
+                return $this->render('cita/new.html.twig', [
+                    'citum' => $citum,
+                    'form' => $form->createView(),
+                ]);
+            }else{
+                return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+            }
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('cita/new.html.twig', [
-            'citum' => $citum,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
      * @Route("/{id}", name="cita_show", methods={"GET"})
      */
-    public function show(Cita $citum): Response
+    public function show(Cita $citum, Request $request): Response
     {
-        return $this->render('cita/show.html.twig', [
-            'citum' => $citum,
-        ]);
+        $session = $request->getSession();
+        
+        if($session->get("usuario_id")){
+            return $this->render('cita/show.html.twig', [
+                'citum' => $citum,
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -81,34 +105,41 @@ class CitaController extends AbstractController
     public function edit($id, Request $request, Cita $citum): Response
     {
         $session = $request->getSession();
+        if($session->get("usuario_id")){
+            if($session->get("usuario_inmobiliaria")){
+                $form = $this->createForm(CitaType::class, $citum);
+                $form->handleRequest($request);
 
-        $form = $this->createForm(CitaType::class, $citum);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
-            $geo = json_decode($geo, true);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $direccion = $_POST["cita"]["direccion"].", ".$_POST["cita"]["ciudad"];
+                    $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($direccion).'&key=AIzaSyBX1Qy2dFMigK3r7pwgCBFC90exmctPt6g ');
+                    $geo = json_decode($geo, true);
 
 
-            $latitud = $geo['results'][0]['geometry']['location']['lat'];
-            $longitud = $geo['results'][0]['geometry']['location']['lng'];
-            
-            $citum->setLatitud($latitud);
-            $citum->setLongitud($longitud);
+                    $latitud = $geo['results'][0]['geometry']['location']['lat'];
+                    $longitud = $geo['results'][0]['geometry']['location']['lng'];
+                    
+                    $citum->setLatitud($latitud);
+                    $citum->setLongitud($longitud);
 
-            $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
+                    $citum->setCiudad(strtoupper($_POST["inmueble"]["ciudad"]));
 
-            $this->getDoctrine()->getManager()->flush();
+                    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('cita_show', array("id"=>$id));
+                    return $this->redirectToRoute('cita_show', array("id"=>$id));
+                }
+
+                return $this->render('cita/edit.html.twig', [
+                    'citum' => $citum,
+                    'form' => $form->createView(),
+                    'idCita'=>$id
+                ]);
+            }else{
+                return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+            }
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('cita/edit.html.twig', [
-            'citum' => $citum,
-            'form' => $form->createView(),
-            'idCita'=>$id
-        ]);
     }
 
     /**
@@ -117,14 +148,21 @@ class CitaController extends AbstractController
     public function delete(Request $request, Cita $citum): Response
     {
         $session = $request->getSession();
+        if($session->get("usuario_id")){
+            if($session->get("usuario_inmobiliaria")){
+                if ($this->isCsrfTokenValid('delete'.$citum->getId(), $request->request->get('_token'))) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($citum);
+                    $entityManager->flush();
+                }
 
-        if ($this->isCsrfTokenValid('delete'.$citum->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($citum);
-            $entityManager->flush();
+                return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+            }else{
+                return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
+            }
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->redirectToRoute('cita_index', array("id"=>$session->get("usuario_id")));
     }
 
     /**

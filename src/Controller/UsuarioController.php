@@ -18,11 +18,20 @@ class UsuarioController extends AbstractController
     /**
      * @Route("/", name="usuario_index", methods={"GET"})
      */
-    public function index(UsuarioRepository $usuarioRepository): Response
+    public function index(UsuarioRepository $usuarioRepository, Request $request): Response
     {
-        return $this->render('usuario/index.html.twig', [
-            'usuarios' => $usuarioRepository->findAll(),
-        ]);
+        $session = $request->getSession();
+        if($session->get("usuario_id")){
+            if($session->get("usuario_inmobiliaria")){
+                return $this->render('usuario/index.html.twig', [
+                    'usuarios' => $usuarioRepository->findBy(array("id_inmueble"=>$session->get("usuario_inmobiliaria"))),
+                ]);
+            }else{
+                return $this->redirectToRoute('home_index', array("id"=>$session->get("usuario_id")));
+            }
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -72,33 +81,27 @@ class UsuarioController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="usuario_show", methods={"GET"})
-     */
-    public function show(Usuario $usuario): Response
-    {
-        return $this->render('usuario/show.html.twig', [
-            'usuario' => $usuario,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="usuario_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Usuario $usuario): Response
     {
-        $form = $this->createForm(UsuarioType::class, $usuario);
-        $form->handleRequest($request);
+        if($session->get("usuario_id")){
+            $form = $this->createForm(UsuarioType::class, $usuario);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('usuario_index');
+                return $this->redirectToRoute('usuario_index');
+            }
+
+            return $this->render('usuario/edit.html.twig', [
+                'usuario' => $usuario,
+                'form' => $form->createView(),
+            ]);
+        }else{
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render('usuario/edit.html.twig', [
-            'usuario' => $usuario,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -106,12 +109,17 @@ class UsuarioController extends AbstractController
      */
     public function delete(Request $request, Usuario $usuario): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$usuario->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($usuario);
-            $entityManager->flush();
-        }
+        if($session->get("usuario_id")){
+            if ($this->isCsrfTokenValid('delete'.$usuario->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($usuario);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('usuario_index');
+            return $this->redirectToRoute('usuario_index');
+
+        }else{
+            return $this->redirectToRoute('login');
+        }
     }
 }
