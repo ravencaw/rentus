@@ -39,7 +39,7 @@ class InmuebleRepository extends ServiceEntityRepository
             ->setParameter('precio_min', $array_filtros["precio_min"]);
         }
         if(isset($array_filtros["precio_max"])){
-            $qb -> andWhere('i.precio > :precio_max')
+            $qb -> andWhere('i.precio < :precio_max')
             ->setParameter('precio_max', $array_filtros["precio_max"]);
         }
 
