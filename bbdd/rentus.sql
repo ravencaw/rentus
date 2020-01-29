@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-01-2020 a las 21:01:47
+-- Tiempo de generación: 29-01-2020 a las 14:59:49
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -42,7 +42,8 @@ CREATE TABLE `alerta` (
 --
 
 INSERT INTO `alerta` (`id`, `id_inmueble`, `id_usuario`) VALUES
-(4, 5, 34);
+(4, 5, 34),
+(5, 5, 36);
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,7 @@ CREATE TABLE `cita` (
 INSERT INTO `cita` (`id`, `fecha_hora`, `id_usuario1`, `id_usuario2`, `direccion`, `ciudad`, `longitud`, `latitud`) VALUES
 (1, '2020-02-04 19:00:00', 34, 1, 'Calle Galera 17', 'Sevilla', '-5.999035', '37.3880055'),
 (2, '2020-01-18 20:15:00', 2, 1, 'Plaza Nueva 7', 'Granada', '', ''),
-(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'Sevilla', '-5.985995', '37.3901403'),
+(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'SEVILLA', '-5.985995', '37.3901403'),
 (5, '2020-01-29 16:30:00', 34, 1, 'Coso Viejo', 'ANTEQUERA', '-4.5579117', '37.0169032');
 
 -- --------------------------------------------------------
@@ -90,8 +91,8 @@ CREATE TABLE `favorito` (
 --
 
 INSERT INTO `favorito` (`id`, `id_usuario`, `id_inmueble`) VALUES
-(4, 34, 1),
-(7, 34, 2);
+(7, 34, 2),
+(8, 34, 1);
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,9 @@ INSERT INTO `foto` (`id`, `id_inmueble`, `ruta`) VALUES
 (6, 5, 'apartamento-samy-e-ricky-lapa360-01.jpg'),
 (7, 5, 'imagem31-4.jpg'),
 (8, 5, 'skyline.jpg'),
-(9, 1, 'skyline.jpg');
+(9, 1, 'skyline.jpg'),
+(10, 1, 'imagem31-4.jpg'),
+(11, 6, 'skyline.jpg');
 
 -- --------------------------------------------------------
 
@@ -131,7 +134,7 @@ CREATE TABLE `inmobiliaria` (
   `id` int(11) NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `direccion` text COLLATE utf8_spanish2_ci NOT NULL,
-  `nif` varchar(7) COLLATE utf8_spanish2_ci NOT NULL,
+  `nif` varchar(9) COLLATE utf8_spanish2_ci NOT NULL,
   `telefono` int(9) NOT NULL,
   `id_usuario_admin` int(11) NOT NULL,
   `logo` text COLLATE utf8_spanish2_ci NOT NULL
@@ -142,8 +145,7 @@ CREATE TABLE `inmobiliaria` (
 --
 
 INSERT INTO `inmobiliaria` (`id`, `nombre`, `direccion`, `nif`, `telefono`, `id_usuario_admin`, `logo`) VALUES
-(5, 'Inmo1', 'Calle nueva', '2433543', 656345345, 34, 'C:\\xampp\\tmp\\phpCC24.tmp'),
-(6, 'Inmobiliaria Juan Alberto', 'Calle Falsa 2', '342344A', 667678678, 36, 'C:\\xampp\\tmp\\php1DC4.tmp');
+(5, 'Inmo1', 'Calle nueva', '2433543', 656345345, 34, 'C:\\xampp\\tmp\\php406C.tmp');
 
 -- --------------------------------------------------------
 
@@ -179,7 +181,8 @@ INSERT INTO `inmueble` (`id`, `tipo_inmueble`, `precio`, `superficie`, `direccio
 (1, 'venta', 260000, 150, 'Calle Encarnacion nº9', 'centro', 'ANTEQUERA', 29202, '-4.5579117', '37.0169032', 3, 2, 'Piso en pleno centro de Antequera', 'Terraza, calefaccion, aire acondicionado', 34, 1),
 (2, 'venta', 160000, 100, 'Calle Toril nº12 2ºA', 'centro', 'ANTEQUERA', 29200, '', '', 2, 1, 'Piso en la calle Toril', 'Calefaccion, bañera', 2, 0),
 (3, 'alquiler', 420, 90, 'Calle Galera 17', 'centro', 'SEVILLA', 41001, '-5.999035', '37.3880055', 2, 2, 'Piso en pleno centro de Sevilla', '1 sala de estar\r\n1 salon\r\n1 cocina\r\nAmueblado', 34, 1),
-(5, 'venta', 350000, 100, 'Calle Trasierras 5', 'centro', 'ANTEQUERA', 29200, '-4.5574382', '37.0198236', 3, 1, 'Piso amueblado en pleno centro de Antequera', 'Amueblado\r\nTerraza', 34, 1);
+(5, 'venta', 350000, 100, 'Calle Trasierras 5', 'centro', 'ANTEQUERA', 29200, '-4.5574382', '37.0198236', 3, 1, 'Piso amueblado en pleno centro de Antequera', 'Amueblado\r\nTerraza', 34, 1),
+(6, 'venta', 350000, 90, 'Calle Merecillas 9', 'centro', 'ANTEQUERA', 29200, '-4.560871', '37.0207448', 2, 2, 'Piso en pleno centro de Antequera, todo exterior', 'Balcon amplio', 34, 1);
 
 -- --------------------------------------------------------
 
@@ -231,12 +234,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nombre`, `correo`, `telefono`, `password`, `id_inmobiliaria`) VALUES
-(1, 'Pepe', 'pepe@mail.com', 645556677, 'pepe1234', NULL),
-(2, 'Juan', 'juan@mail.com', 657452375, 'juan1234', NULL),
-(7, 'Pablo Perez', 'pabper@mail.com', 685749632, 'pabper', NULL),
-(34, 'Pedro Perez', 'pedper@mail.com', 685849632, 'pedper', 5),
-(35, 'Juan Benitez', 'juaben@mail.com', 684990930, 'juaben', NULL),
-(36, 'Juan Alberto', 'juanalb@mail.com', 677867876, 'juanalb', 6);
+(2, 'Juan', 'juan@mail.com', 657452375, '$2y$10$DqiBguwaFgMpzXJQyfgLYeU2i9gnMd9n9CxhLBQFRqp4Kcji79RfK', NULL),
+(34, 'Pedro Perez', 'pedper@mail.com', 685849632, '$2y$10$IYu6q0vQtxwr3aIIj19l9eJifsGoS/OmWvk2j13kJTxGQG/XldYhC', 5),
+(41, 'Laura Gomez', 'laugom@mail.com', 685749632, '$2y$10$Sb3pAOCx63VRcRnKvHP56uBRCtGd1ScrMg5W4ZE9ye9CGeZdSAJ.G', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -298,7 +298,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `alerta`
 --
 ALTER TABLE `alerta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cita`
@@ -310,25 +310,25 @@ ALTER TABLE `cita`
 -- AUTO_INCREMENT de la tabla `favorito`
 --
 ALTER TABLE `favorito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `foto`
 --
 ALTER TABLE `foto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `inmobiliaria`
 --
 ALTER TABLE `inmobiliaria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `mensaje`
@@ -340,7 +340,7 @@ ALTER TABLE `mensaje`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
