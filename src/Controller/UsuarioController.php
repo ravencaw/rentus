@@ -66,7 +66,7 @@ class UsuarioController extends AbstractController
                 }else{
                     $usuario_id = $this->getDoctrine()
                     ->getRepository(Usuario::class)
-                    ->findOneByCorreoAndPass($_POST["usuario"]["correo"], $_POST["usuario"]["password"]);
+                    ->findOneByCorreoAndPass($_POST["usuario"]["correo"], $contraseña);
                     return $this->redirectToRoute("inmobiliaria_new",array("id"=>$usuario_id['id']));
                 }
             }else{
