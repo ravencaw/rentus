@@ -190,9 +190,20 @@ class HomeController extends AbstractController
         $inmuebles = array();
 
         foreach($result as $res){
+             $foto = $this->getDoctrine()
+            ->getRepository(Foto::class)
+            ->findOneBy(array('idInmueble'=>$res->getId()));
+
             $normalizers = new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer();
             $norm = $normalizers->normalize($res);
+            if($foto){
+                $normFoto = $normalizers->normalize($foto);
+                $fotos[$res->getId()] = $normFoto;
+                $norm["foto"]=$fotos;
+            }
+            
             $inmuebles[]=$norm;
+            
         }
         
         return new JsonResponse($inmuebles);

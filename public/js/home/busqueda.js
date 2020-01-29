@@ -2,6 +2,11 @@ $(document).ready(function () {
   $(".filter").on("change", function () {
     busquedaFiltros();
   });
+  $(".filter").keypress(function(e) {
+    if(e.which == 13) {
+      busquedaFiltros();
+    }
+  });
 });
 
 function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, precio_metro_cuadrado, zona, n_habitaciones, n_baños) {
@@ -21,7 +26,6 @@ function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, prec
       "n_baños": (n_baños) ? n_baños : ""
     },
     success: function (result) {
-      console.log(result);
 
       $(".busqueda").empty();
 
@@ -66,13 +70,20 @@ function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, prec
           "</div>" +
           "<div class='resultados'></div></div>");
         result.forEach(element => {
-          $(".resultados").append("<div class='card mb-3 col-md-12'>" +
+          var html = "<div class='card mb-3 col-md-12'>" +
             "<a href='resultado/" + element.id + "'>" +
-            "<div class='row no-gutters'>" +
-            "<div class='col-md-4'>" +
-            "<img src='../img/no_image.jpg' class='card-img'  style='max-width: 800px;'/>" +
-            "</div>" +
-            "<div class='col-md-8'>" +
+            "<div class='row no-gutters'>";
+          console.log(element);
+            if(element.foto){
+              html+="<div class='col-md-4'>" +
+              "<img src='../img/inmuebles/"+element.foto[element.id].idInmueble+"/"+element.foto[element.id].ruta+"' class='card-img'  style='max-width: 800px;'/>" +
+              "</div>";
+            }else{
+              html+="<div class='col-md-4'>" +
+              "<img src='../img/no_image.jpg' class='card-img'  style='max-width: 800px;'/>" +
+              "</div>";
+            }
+            html += "<div class='col-md-8'>" +
             "<div class='card-body'>" +
             "<h5 class='card-title'>" + element.direccion + "</h5>" +
             "<p class='card-text'>Precio:" + element.precio + "€</p>" +
@@ -82,7 +93,8 @@ function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, prec
             "</div>" +
             "</div>" +
             "</a>" +
-            "</div>");
+            "</div>";
+            $(".resultados").append(html);
         });
 
         $(".filter").on("change", function () {
