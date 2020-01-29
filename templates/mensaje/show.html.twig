@@ -3,7 +3,7 @@
 {% block title %}Mensaje{% endblock %}
 
 {% block body %}
-    <a href="{{ path('mensaje_index') }}"><i class="fa fa-arrow-left"></i></a><br>
+    <a class="btn btn-light" href="{{ path('mensaje_index') }}"><i class="fa fa-arrow-left"></i></a><br>
     <h1>Mensaje {{ mensaje.id }}</h1>
 
     <table class="table">

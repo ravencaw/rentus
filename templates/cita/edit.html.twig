@@ -3,11 +3,11 @@
 {% block title %}Edit Cita{% endblock %}
 
 {% block body %}
-    <a href="{{ path('cita_show', {id: idCita}) }}"><i class="fa fa-arrow-left"></i></a>
+    <a class="btn btn-light" href="{{ path('cita_show', {id: idCita}) }}"><i class="fa fa-arrow-left"></i></a>
     
     <h1>Editar cita</h1>
 
-    {{ include('cita/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('cita/_form.html.twig', {'button_label': 'Actualizar'}) }}
 
     
 
