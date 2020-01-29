@@ -1,3 +1,11 @@
+.btn-primary{
+  background-color: #56c6c6 !important;
+}
+
+a{
+  color: #56c6c6 !important;
+}
+
 /*Login CSS*/
 
 .login-clean {
@@ -456,10 +464,6 @@
   #wrapper {
     padding-left: 250px;
   }
-
-  #wrapper button.navbar-toggler{
-    visibility: hidden;
-  }
 }
 
 @media (min-width:768px) {
@@ -468,11 +472,6 @@
   }
 }
 
-@media (max-width:768px) {
-  #wrapper button.navbar-toggler{
-    visibility: visible;
-  }
-}
 
 /* Footer CSS */
 

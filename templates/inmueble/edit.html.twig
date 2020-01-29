@@ -3,6 +3,7 @@
 {% block title %}Editar inmueble{% endblock %}
 
 {% block body %}
+<a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}"><i class="fa fa-arrow-left"></i></a>
     <h1>Editar inmueble</h1>
     
     {{ include('inmueble/_form_edit.html.twig', {'button_label': 'Guardar'}) }}
@@ -17,7 +18,7 @@
             {% endfor %}
         </div>
 
-    <a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Volver</a>
+    
 
     {{ include('inmueble/_delete_form.html.twig') }}
 

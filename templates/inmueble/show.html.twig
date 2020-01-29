@@ -3,6 +3,7 @@
 {% block title %}Inmueble{% endblock %}
 
 {% block body %}
+<a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}"><i class="fa fa-arrow-left"></i></a>
     <h1>Inmueble</h1>
 
     <table class="table">
@@ -46,7 +47,7 @@
         </tbody> 
     </table>
 
-    <a class="btn btn-light" href="{{ path('inmueble_index', {id: app.session.get('usuario_id')}) }}">Volver</a>
+    
 
     <a class="btn btn-primary" href="{{ path('inmueble_edit', {'id': inmueble.id}) }}">Editar</a>
 

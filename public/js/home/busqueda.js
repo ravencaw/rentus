@@ -30,8 +30,8 @@ function ajaxGetInmuebles(ciudad, tipo, precio_min, precio_max, superficie, prec
       $(".busqueda").empty();
 
       if (result.length > 0) {
-        $(".busqueda").append("<div id='wrapper' class='container' style='margin: 0px; margin-bottom:20%;color: rgb(0,0,0);background-color: rgba(39,104,104,0);'>" +
-          "<div id='#sidebar-wrapper' class='col-md-2' style='color: rgb(0,0,0);padding: 0px;background-color: rgba(39,104,104,0);'>" +
+        $(".busqueda").append("<div id='wrapper' class='container col-md-12' style='margin: 0px; margin-bottom:20%;color: rgb(0,0,0);background-color: rgba(39,104,104,0);'>" +
+        "<div id='#sidebar-wrapper' class='col-md-2' style='color: rgb(0,0,0);padding: 0px;background-color: rgba(39,104,104,0);'>" +
           "<div id='sidebar-wrapper' style='background-color: rgb(39,104,104);color: rgb(0,0,0);text-align:left;'>" +
           "<form method='post' id='filtro_form'>" +
           "<ul class='sidebar-nav'>" +
