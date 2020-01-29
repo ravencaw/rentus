@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-01-2020 a las 14:59:49
+-- Tiempo de generación: 29-01-2020 a las 15:06:51
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -68,10 +68,7 @@ CREATE TABLE `cita` (
 --
 
 INSERT INTO `cita` (`id`, `fecha_hora`, `id_usuario1`, `id_usuario2`, `direccion`, `ciudad`, `longitud`, `latitud`) VALUES
-(1, '2020-02-04 19:00:00', 34, 1, 'Calle Galera 17', 'Sevilla', '-5.999035', '37.3880055'),
-(2, '2020-01-18 20:15:00', 2, 1, 'Plaza Nueva 7', 'Granada', '', ''),
-(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'SEVILLA', '-5.985995', '37.3901403'),
-(5, '2020-01-29 16:30:00', 34, 1, 'Coso Viejo', 'ANTEQUERA', '-4.5579117', '37.0169032');
+(3, '2020-02-03 21:10:00', 2, 34, 'Calle Imperial 43', 'SEVILLA', '-5.985995', '37.3901403');
 
 -- --------------------------------------------------------
 
@@ -210,8 +207,7 @@ INSERT INTO `mensaje` (`id`, `id_receptor`, `id_inmueble`, `correo`, `telefono`,
 (1, 34, 1, 'pabloz@mail.com', 667786786, 'Concertar visita', '2020-01-28 18:12:07', 'dfsdfdfsdf'),
 (2, 34, 1, 'pedroperez@mail.com', 654789821, 'Concertar visita', '2020-01-28 18:13:07', 'Quisiera concertar una cita para ver el inmueble'),
 (3, 34, 1, 'mepicaunpie@mail.com', 675893290, 'Concertar visita', '2020-01-28 18:17:16', 'Quiero concertar una cita'),
-(4, 2, 2, 'mepicaunpie@mail.com', 654789821, 'Concertar visita', '2020-01-28 18:36:29', 'Quisiera concertar una cita'),
-(5, 34, 1, 'pepe@mail.com', 685903102, 'Concertar visita', '2020-01-28 19:43:44', 'Quiero concertar una cita');
+(4, 2, 2, 'mepicaunpie@mail.com', 654789821, 'Concertar visita', '2020-01-28 18:36:29', 'Quisiera concertar una cita');
 
 -- --------------------------------------------------------
 
