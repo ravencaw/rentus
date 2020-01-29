@@ -53,6 +53,10 @@ class UsuarioController extends AbstractController
                 $valid = false;
             }
             if($valid){
+
+                $contraseña = password_hash ($_POST["usuario"]["password"],PASSWORD_DEFAULT);
+                $usuario->setPassword($contraseña);
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($usuario);
                 $entityManager->flush();
@@ -91,6 +95,8 @@ class UsuarioController extends AbstractController
                 $form->handleRequest($request);
 
                 if ($form->isSubmitted() && $form->isValid()) {
+                    $contraseña = password_hash ($_POST["usuario"]["password"],PASSWORD_DEFAULT);
+                    $usuario->setPassword($contraseña);
                     $this->getDoctrine()->getManager()->flush();
 
                     return $this->redirectToRoute('usuario_edit', array("id"=>$session->get("usuario_id")));

@@ -28,22 +28,26 @@ class LoginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $usuario = $this->getDoctrine()
                 ->getRepository(Usuario::class)
-                ->findOneByCorreoAndPass($_POST["login"]["correo"], $_POST["login"]["password"]);
+                ->findOneBy(array("correo"=>$_POST["login"]["correo"]));
 
             if($usuario){
-                $session = $request->getSession();
+                if(password_verify($_POST["login"]["password"], $usuario->getPassword())){
+                    $session = $request->getSession();
 
-                $session->start();
+                    $session->start();
 
-                $session->clear();
+                    $session->clear();
 
-                $session->set('usuario_id', $usuario["id"]);
-                $session->set('usuario_nombre', $usuario["nombre"]);
-                $session->set('usuario_inmobiliaria', $usuario["idInmobiliaria"]);
-                
-                return $this->redirectToRoute('home_index');
+                    $session->set('usuario_id', $usuario->getId());
+                    $session->set('usuario_nombre', $usuario->getNombre());
+                    $session->set('usuario_inmobiliaria', $usuario->getIdInmobiliaria());
+                    
+                    return $this->redirectToRoute('home_index');
+                }else{
+                    echo "<div class='alert alert-danger' role='alert'>La contraseña introducida es incorrecta</div>";
+                }
             }else{
-                echo "<div class='alert alert-danger' role='alert'>El usuario o la contraseña son incorrectos</div>";
+                echo "<div class='alert alert-danger' role='alert'>El usuario es incorrecto</div>";
             }
         }
 
