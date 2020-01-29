@@ -144,19 +144,20 @@ class InmuebleController extends AbstractController
                         foreach($_FILES as $f){
                             if(strlen($f["name"])>0){
                                 if($f["type"]=="image/jpeg"){
-                                    $tmp_name = $f["tmp_name"];
-                                    $nombre = $f["name"];
+                                        $tmp_name = $f["tmp_name"];
+                                        $nombre = $f["name"];
 
-                                    move_uploaded_file($tmp_name, "$directorio/$nombre");
+                                        move_uploaded_file($tmp_name, "$directorio/$nombre");
 
-                                    $foto = new Foto();
+                                        $foto = new Foto();
 
-                                    $foto->setIdInmueble($inmueble->getId());
-                                    $foto->setRuta($nombre);
+                                        $foto->setIdInmueble($inmueble->getId());
+                                        $foto->setRuta($nombre);
 
-                                    $entityManager = $this->getDoctrine()->getManager();
-                                    $entityManager->persist($foto);
-                                    $entityManager->flush();
+                                        $entityManager = $this->getDoctrine()->getManager();
+                                        $entityManager->persist($foto);
+                                        $entityManager->flush();
+                                    
                                 }
                             }
                         }

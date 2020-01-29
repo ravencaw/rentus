@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class InmuebleType extends AbstractType
 {
@@ -14,13 +16,24 @@ class InmuebleType extends AbstractType
     {
         $builder
             ->add('tipoInmueble', ChoiceType::class, [
+                'required' => true,
                 'choices' => [
                     'Venta' => 'venta',
                     'Alquiler' => 'alquiler'
                 ]
             ])
-            ->add('precio')
-            ->add('superficie')
+            ->add('precio', NumberType::class,[
+                'required' => true,
+                'constraints' => [
+                    new Positive()
+                ]
+            ])
+            ->add('superficie', NumberType::class,[
+                'required' => true,
+                'constraints' => [
+                    new Positive()
+                ]
+            ])
             ->add('direccion')
             ->add('zona', ChoiceType::class, [
                 'choices' => [
@@ -32,9 +45,24 @@ class InmuebleType extends AbstractType
                 ]
             ])
             ->add('ciudad')
-            ->add('cp')
-            ->add('habitaciones')
-            ->add('bathroom')
+            ->add('cp', NumberType::class,[
+                'required' => true,
+                'constraints' => [
+                    new Positive()
+                ]
+            ])
+            ->add('habitaciones', NumberType::class,[
+                'required' => true,
+                'constraints' => [
+                    new Positive()
+                ]
+            ])
+            ->add('bathroom', NumberType::class,[
+                'required' => true,
+                'constraints' => [
+                    new Positive()
+                ]
+            ])
             ->add('comentarios')
             ->add('extras')
             ->add('disponible', ChoiceType::class, [

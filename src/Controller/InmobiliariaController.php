@@ -56,7 +56,7 @@ class InmobiliariaController extends AbstractController
 
                 $inmobiliaria_id=$this->getDoctrine()
                 ->getRepository(Inmobiliaria::class)
-                ->findOneBy(array("nif"=>$_POST["inmobiliaria"]["nif"]));
+                ->findOneBy(array("nif"=>$inmobiliarium->getNif()));
                 
                 $usuario->setIdInmobiliaria($inmobiliaria_id->getId());
                 $entityManager->persist($usuario);
